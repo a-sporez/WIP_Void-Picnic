@@ -28,17 +28,14 @@ end
 function Menu:update(dt)
 end
 --]]
-function Menu:draw(button_x, button_y, text_x, text_y)
+function Menu:draw()
     love.graphics.print("menu state", 10, 10)
-    self.exitButton:draw(button_x, button_y, 24, 6)
-    if self.exit_button then
-        self.exitButton:checkPressed(self.exitButton.x, self.exitButton.y)
-    end
+    self.exitButton:draw()
 end
 
 function Menu:mousepressed(x, y, button)
     if button == 1 and self.exitButton then
-        self.exitButton:checkPressed(x, y, 1)
+        self.exitButton:checkPressed(x, y, button)
     end
 end
 

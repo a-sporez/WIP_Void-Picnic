@@ -13,15 +13,27 @@ function GameState:switch(state)
     end
 end
 
-function GameState.update(dt)
-    if GameState.currentState and GameState.currentState.update then
-        GameState.currentState:update(dt)
+function GameState:update(dt)
+    if self.currentState and self.currentState.update then
+        self.currentState:update(dt)
     end
 end
 
-function GameState.draw()
-    if GameState.currentState and GameState.currentState.draw then
-        GameState.currentState:draw()
+function GameState:draw()
+    if self.currentState and self.currentState.draw then
+        self.currentState:draw()
+    end
+end
+
+function GameState:mousepressed(x, y, button)
+    if self.currentState and self.currentState.mousepressed then
+        self.currentState:mousepressed(x, y, button)
+    end
+end
+
+function GameState:keypressed(key)
+    if self.currentState and self.currentState.keypressed then
+        self.currentState:keypressed(key)
     end
 end
 
