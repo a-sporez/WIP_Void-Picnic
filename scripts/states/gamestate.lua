@@ -13,6 +13,14 @@ function GameState:switch(state)
     end
 end
 
+function GameState:enableRunning()
+    self:switch(require('scripts.states.running'))
+end
+
+function GameState:enableMenu()
+    self:switch(require('scripts.states.menu'))
+end
+
 function GameState:update(dt)
     if self.currentState and self.currentState.update then
         self.currentState:update(dt)

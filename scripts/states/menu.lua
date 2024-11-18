@@ -1,5 +1,6 @@
 local love        = require('love')
-local Button      = require('scripts.classes.buttons.buttons')
+local Buttons      = require('scripts.classes.buttons.buttons')
+local GameState   = require('scripts.states.gamestate')
 
 local Menu = {}
 local window_width = love.graphics.getWidth()
@@ -12,9 +13,20 @@ function Menu:enter()
     local menuFont = love.graphics.newFont('assets/fonts/setbackt.ttf', 22)
     love.graphics.setFont(menuFont)
 
-    self.exitButton = Button.new(
+    self.playButton = Buttons.new(
         centre_x - offset_x,
         centre_y - offset_y,
+        96,
+        36,
+        "PLAY",
+        function() GameState:enableRunning() end,
+        nil,
+        'assets/sprites/button_1.png'
+    )
+
+    self.exitButton = Buttons.new(
+        centre_x - offset_x,
+        centre_y + offset_y,
         96,
         36,
         "EXIT",
@@ -24,18 +36,24 @@ function Menu:enter()
     )
 
 end
---[[
+
 function Menu:update(dt)
 end
---]]
+
 function Menu:draw()
     love.graphics.print("menu state", 10, 10)
-    self.exitButton:draw()
+    self.playButton:draw(self.button_x, self.button_y, 14, 7)
+    self.exitButton:draw(self.button_x, self.button_y, 14, 7)
 end
 
 function Menu:mousepressed(x, y, button)
     if button == 1 and self.exitButton then
         self.exitButton:checkPressed(x, y, button)
+        print("click")
+    end
+    if button == 1 and self.playButton then
+        self.playButton:checkPressed(x, y, button)
+        print("click")
     end
 end
 
