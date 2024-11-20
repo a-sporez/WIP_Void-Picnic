@@ -1,21 +1,22 @@
 --luacheck: ignore dt
 local love          = require('love')
-local GameState     = require('scripts.states.gamestate')
-local Buttons       = require('scripts.classes.buttons.buttons')
-local SurveyDrone   = require('scripts.classes.drones.survey')
+local GameState     = require('source.states.gamestate')
+local Buttons       = require('source.classes.buttons.buttons')
+local SurveyDrone   = require('source.classes.drones.survey')
+local world         = require('source.scenes.world.world')
 
 local Running = {}
 local window_width = love.graphics.getWidth()
 local window_height = love.graphics.getHeight()
-local centre_x = window_width / 2
-local centre_y = window_height / 2
 local offset_x, offset_y = 48, 18
 
 function Running:enter()
 
+    self.World = world:new(10000, 10000)
+
     self.menuButton = Buttons.new(
-        centre_x - offset_x,
-        love.graphics.getHeight() - offset_y * 2,
+        window_width - offset_x * 2,
+        window_height - offset_y * 2,
         96,
         36,
         "MENU",
@@ -28,7 +29,8 @@ function Running:enter()
 end
 
 function Running:update(dt)
-    self.survey2:move(-1, -1)
+    self.survey2:move(-1, -1, dt)
+    self.World:update(dt)
 end
 
 function Running:draw()

@@ -1,6 +1,6 @@
 local love              = require('love')
-local GameState         = require('scripts.states.gamestate')
-local Menu              = require('scripts.states.menu')
+local GameState         = require('source.states.gamestate')
+local Menu              = require('source.states.menu')
 
 function love.load()
     GameState:switch(Menu)

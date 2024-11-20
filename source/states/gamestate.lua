@@ -14,11 +14,11 @@ function GameState:switch(state)
 end
 
 function GameState:enableRunning()
-    self:switch(require('scripts.states.running'))
+    self:switch(require('source.states.running'))
 end
 
 function GameState:enableMenu()
-    self:switch(require('scripts.states.menu'))
+    self:switch(require('source.states.menu'))
 end
 
 function GameState:update(dt)
