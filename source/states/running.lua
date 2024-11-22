@@ -29,7 +29,7 @@ function Running:enter()
 end
 
 function Running:update(dt)
-    self.survey2:move(-1, -1, dt)
+    self.survey2:move(-10, -10, dt)
     self.World:update(dt)
 end
 
