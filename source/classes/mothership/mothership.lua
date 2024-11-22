@@ -1,4 +1,5 @@
 local love = require('love')
+--luacheck: ignore dt
 
 local Mothership = {}
 
