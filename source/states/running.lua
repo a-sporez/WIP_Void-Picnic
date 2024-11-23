@@ -3,7 +3,7 @@ local love          = require('love')
 local GameState     = require('source.states.gamestate')
 local Buttons       = require('source.classes.buttons.buttons')
 local SurveyDrone   = require('source.classes.drones.survey')
-local world         = require('source.scenes.world.world')
+local world         = require('source.scenes.world.World')
 
 local Running = {}
 local window_width = love.graphics.getWidth()
