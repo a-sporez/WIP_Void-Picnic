@@ -2,9 +2,10 @@ local love = require('love')
 local Canvas = {}
 Canvas.__index = Canvas
 
-function Canvas:new(width, height)
+function Canvas:new(width, height, currentWorld)
     local obj = {
-        canvas = love.graphics.newCanvas(width, height)
+        canvas = love.graphics.newCanvas(width, height),
+        currentWorld = currentWorld or nil
     }
     setmetatable(obj, self)
     return obj
