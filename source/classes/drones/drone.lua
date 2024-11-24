@@ -17,9 +17,9 @@ function Drone:new(x, y, width, height)
 end
 
 -- update the Drone with basic movement logic
-function Drone:move(dx, dy)
-    self.x = self.x + dx
-    self.y = self.y + dy
+function Drone:move(dx, dy, dt)
+    self.x = self.x + dx * dt
+    self.y = self.y + dy * dt
 end
 
 -- draw an ellipse as placeholder

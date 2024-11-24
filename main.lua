@@ -1,7 +1,6 @@
-local love = require('love')
-local GameState = require('scripts.states.gamestate')
-local Menu = require('scripts.states.menu')
-local Running = require('scripts.states.running')
+local love              = require('love')
+local GameState         = require('source.states.gamestate')
+local Menu              = require('source.states.menu')
 
 function love.load()
     GameState:switch(Menu)
@@ -16,15 +15,9 @@ function love.draw()
 end
 
 function love.mousepressed(x, y, button)
-    if GameState.currentState and GameState.currentState.mousepressed then
-        GameState.currentState:mousepressed(x, y, button)
-    end
+    GameState:mousepressed(x, y, button)
 end
 
 function love.keypressed(key)
-    if key == '1' then
-        GameState:switch(Menu)
-    elseif key == '2' then
-        GameState:switch(Running)
-    end
+    GameState:keypressed(key)
 end

@@ -1,6 +1,5 @@
 local love = require('love')
-
-local Drone = require('scripts.classes.drones.drone')
+local Drone = require('source.classes.drones.drone')
 -- this class is an extension of Drone class, adding color.
 local SurveyDrone = Drone:new()
 
