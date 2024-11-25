@@ -1,5 +1,5 @@
-local love         = require('love')
-local Buttons      = require('source.classes.buttons.buttons')
+
+local Buttons      = require('source.classes.buttons.Button')
 local GameState    = require('source.states.gamestate')
 
 local Menu = {}

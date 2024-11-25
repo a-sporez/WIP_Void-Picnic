@@ -1,4 +1,4 @@
-local love = require('love')
+
 local worldHandler = {}
 worldHandler.__index = worldHandler
 

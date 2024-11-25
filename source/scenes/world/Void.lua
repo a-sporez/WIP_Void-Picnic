@@ -3,7 +3,7 @@ This is the default world to test things and create debug boilerplate early dev.
 TODO: integrate camera
 --]]
 local World         = require('source.scenes.world.World')
-local SurveyDrone   = require('source.classes.drones.survey')
+local SurveyDrone   = require('source.classes.drones.surveyDrone')
 
 local Void = World:new(4000, 4000)
 

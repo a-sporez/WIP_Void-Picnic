@@ -1,4 +1,4 @@
-local love = require('love')
+
 local Canvas = {}
 Canvas.__index = Canvas
 

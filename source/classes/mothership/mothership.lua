@@ -1,6 +1,3 @@
-local love = require('love')
---luacheck: ignore dt
-
 local Mothership = {}
 
 function Mothership:new(x, y, width, height, max_speed, hardpoints)

@@ -1,5 +1,3 @@
-local love = require('love')
-
 local Asteroid = {}
 
 function Asteroid:new(x, y, radius)
@@ -12,3 +10,5 @@ function Asteroid:new(x, y, radius)
     self.__index = self
     return asteroid
 end
+
+return Asteroid

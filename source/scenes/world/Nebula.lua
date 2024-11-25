@@ -1,6 +1,6 @@
 -- secondary test world
 local World         = require('source.scenes.world.World')
-local SurveyDrone   = require('source.classes.drones.survey')
+local SurveyDrone   = require('source.classes.drones.surveyDrone')
 
 local Nebula = World:new(4000, 4000)
 

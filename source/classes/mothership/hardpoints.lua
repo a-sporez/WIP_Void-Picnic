@@ -1,5 +1,3 @@
--- local love = require('love')
-
 local Hardpoints = {}
 
 function Hardpoints:new(type, tier, mount)

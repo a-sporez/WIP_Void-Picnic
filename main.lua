@@ -1,4 +1,4 @@
-local love              = require('love')
+
 local GameState         = require('source.states.gamestate')
 local Menu              = require('source.states.menu')
 
