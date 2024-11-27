@@ -2,7 +2,7 @@ local Canvas = require('source.scenes.world.Canvas')
 
 local canvasMonitor = setmetatable({}, {__index = Canvas})
 
-function canvasMonitor:new(width, height, currentWorld)
+function canvasMonitor:create(width, height, currentWorld)
     local canvas = Canvas:new(width, height, currentWorld)
     setmetatable(canvas, {__index = self})
     return canvas
