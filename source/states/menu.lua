@@ -1,6 +1,6 @@
 
 local Buttons      = require('source.classes.buttons.Button')
-local GameState    = require('source.states.gamestate')
+local GameState    = require('source.states.GameState')
 
 local Menu = {}
 local window_width = love.graphics.getWidth()

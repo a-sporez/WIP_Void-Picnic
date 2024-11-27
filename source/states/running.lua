@@ -1,10 +1,10 @@
 --luacheck: ignore dt
 
-local GameState     = require('source.states.gamestate')
+local GameState     = require('source.states.GameState')
 local Buttons       = require('source.classes.buttons.Button')
 local WorldHandler  = require('source.scenes.world.worldHandler')
-local Void          = require('source.scenes.world.Void')
-local Nebula        = require('source.scenes.world.Nebula')
+local Void          = require('source.scenes.world.worldVoid')
+local Nebula        = require('source.scenes.world.worldNebula')
 local CanvasMonitor = require('source.scenes.world.canvasMonitor')
 local Camera        = require('source.scenes.world.Camera')
 
@@ -32,7 +32,7 @@ function Running:enter()
     worldHandler:switch('void')
     print("Current world set to:", worldHandler.currentWorld)
 
-    canvasMonitor = CanvasMonitor:new(window_width, window_height, worldHandler.currentWorld)
+    canvasMonitor = CanvasMonitor:create(window_width, window_height, worldHandler.currentWorld)
 
     Camera.init(window_width / 2, window_height / 2)
     Camera.setZoom(1)

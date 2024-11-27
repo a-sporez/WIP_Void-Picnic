@@ -8,13 +8,13 @@ function Camera.init(x, y)
     Camera.instance = camera(x, y)
 end
 
-function Camera.update(targetX, targetY, dt)
+function Camera.update(targetX, targetY)
 
 -- Smoothly pan to the target postion
     if targetX and targetY then
         Camera.instance:lookAt(targetX, targetY)
     end
-    local panSpeed = 500 * dt
+    local panSpeed = 500
     if love.keyboard.isDown('up') then
         Camera.instance:move(0, -panSpeed)
     end

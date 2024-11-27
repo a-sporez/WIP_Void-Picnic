@@ -1,7 +1,7 @@
 --[[
 callbacks are passed to GameState base classes.
 --]]
-local GameState         = require('source.states.gamestate')
+local GameState         = require('source.states.GameState')
 local Menu              = require('source.states.menu')
 
 function love.load()
