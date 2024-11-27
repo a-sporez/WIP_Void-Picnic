@@ -6,7 +6,7 @@ local Menu              = require('source.states.menu')
 local Camera            = require('source.scenes.world.Camera')
 
 function love.load()
-    love.keyboard.hasKeyRepeat(true)
+    love.keyboard.setKeyRepeat(true)
     GameState:switch(Menu)
 end
 
