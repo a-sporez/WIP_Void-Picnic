@@ -1,50 +1,41 @@
 local camera = require('libraries.camera')
 
 local Camera = {}
-Camera.instance = nil
+Camera.focus = nil
 Camera.zoom = 1
 
-function Camera.init(x, y)
-    Camera.instance = camera(x, y)
+function Camera:init(x, y)
+    self.focus = camera(x, y)
 end
 
-function Camera.update(targetX, targetY)
-
+function Camera:update(targetX, targetY)
 -- Smoothly pan to the target postion
     if targetX and targetY then
-        Camera.instance:lookAt(targetX, targetY)
-    end
-    local panSpeed = 500
-    if love.keyboard.isDown('up') then
-        Camera.instance:move(0, -panSpeed)
-    end
-    if love.keyboard.isDown('down') then
-        Camera.instance:move(0, panSpeed)
-    end
-    if love.keyboard.isDown('left') then
-        Camera.instance:move(-panSpeed, 0)
-    end
-    if love.keyboard.isDown('right') then
-        Camera.instance:move(panSpeed, 0)
+        self.focus:lookAt(targetX, targetY)
     end
 end
 
-function Camera.setZoom(zoomLevel)
-    Camera.zoom = zoomLevel
-    Camera.instance:zoomTo(Camera.zoom)
+function Camera:move(dx, dy)
+    local x, y = self.focus.x, self.focus.y
+    self.focus:lookAt(x + dx, y + dy)
 end
 
-function Camera.adjustZoom(delta)
-    Camera.zoom = math.max(0.5, math.min(2, Camera.zoom + delta))
-    Camera.instance:zoomTo(Camera.zoom)
+function Camera:setZoom(zoomLevel)
+    self.zoom = zoomLevel
+    self.focus:zoomTo(Camera.zoom)
 end
 
-function Camera.attach()
-    Camera.instance:attach()
+function Camera:adjustZoom(delta)
+    self.zoom = math.max(0.5, math.min(2, Camera.zoom + delta))
+    self.focus:zoomTo(Camera.zoom)
 end
 
-function Camera.detach()
-    Camera.instance:detach()
+function Camera:attach()
+    self.focus:attach()
+end
+
+function Camera:detach()
+    self.focus:detach()
 end
 
 return Camera

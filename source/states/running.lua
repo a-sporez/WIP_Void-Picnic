@@ -34,8 +34,8 @@ function Running:enter()
 
     canvasMonitor = CanvasMonitor:create(window_width, window_height, worldHandler.currentWorld)
 
-    Camera.init(window_width / 2, window_height / 2)
-    Camera.setZoom(1)
+    Camera:init(window_width / 2, window_height / 2)
+    Camera:setZoom(1)
 
     self.menuButton = Buttons.new(
         window_width - offset_x * 2,
@@ -70,19 +70,28 @@ function Running:draw()
     print("Drawing Running state")
     love.graphics.print("running", 10, 10)
 
-    Camera.attach()
+    Camera:attach()
     canvasMonitor:render()
-    Camera.detach()
+    Camera:detach()
     canvasMonitor:draw()
 
     self.menuButton:draw(self.button_x, self.button_y, 14, 7)
 end
 
 function Running:keypressed(key)
+    local panning = 10
     if key == '1' then
         worldHandler:switch('void')
     elseif key == '2' then
         worldHandler:switch('nebula')
+    elseif key == 'up' then
+        Camera:move(0, -panning)
+    elseif key == 'down' then
+        Camera:move(0, panning)
+    elseif key == 'left' then
+        Camera:move(-panning, 0)
+    elseif key == 'right' then
+        Camera:move(panning, 0)
     end
 end
 

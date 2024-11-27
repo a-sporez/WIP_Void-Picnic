@@ -3,7 +3,7 @@ local Mothership = {}
 function Mothership:new(x, y, width, height, max_speed, hardpoints)
     local midX = love.graphics.getWidth() / 2
     local midY = love.graphics.getHeight() / 2
-    local frame = {
+    local obj = {
         x = x or midX,
         y = y or midY,
         width = width or 256,
@@ -15,9 +15,9 @@ function Mothership:new(x, y, width, height, max_speed, hardpoints)
         target = nil,
         hardpoints = hardpoints or {}
     }
-    setmetatable(frame, self)
+    setmetatable(obj, self)
     self.__index = self
-    return frame
+    return obj
 end
 
 function Mothership:update(dt, input)
