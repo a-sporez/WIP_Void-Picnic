@@ -1,4 +1,4 @@
-local Canvas = require('source.scenes.world.Canvas')
+local Canvas = require('source.scenes.utility.Canvas')
 
 local canvasMonitor = setmetatable({}, {__index = Canvas})
 

@@ -1,12 +1,12 @@
 --luacheck: ignore dt
 
 local GameState     = require('source.states.GameState')
-local Buttons       = require('source.classes.buttons.Button')
+local Buttons       = require('source.scenes.utility.interface.Button')
 local WorldHandler  = require('source.scenes.world.worldHandler')
 local Void          = require('source.scenes.world.worldVoid')
 local Nebula        = require('source.scenes.world.worldNebula')
-local CanvasMonitor = require('source.scenes.world.canvasMonitor')
-local Camera        = require('source.scenes.world.Camera')
+local CanvasMonitor = require('source.scenes.utility.canvasMonitor')
+local Camera        = require('source.scenes.utility.Camera')
 
 local Running = {}
 local window_width = love.graphics.getWidth()

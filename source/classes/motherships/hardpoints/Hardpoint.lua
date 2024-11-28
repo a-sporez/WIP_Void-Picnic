@@ -1,6 +1,6 @@
-local Hardpoints = {}
+local Hardpoint = {}
 
-function Hardpoints:new(type, tier, mount)
+function Hardpoint:new(type, tier, mount)
     local hardpoint = {
         type = type or "structure",
         tier = tier or 1,
@@ -12,7 +12,7 @@ function Hardpoints:new(type, tier, mount)
     return hardpoint
 end
 
-function Hardpoints:installModule(module)
+function Hardpoint:installModule(module)
     if self:canInstall(module) then
         self.installed = module
         return true
@@ -21,12 +21,12 @@ function Hardpoints:installModule(module)
     end
 end
 
-function Hardpoints:canInstall(module)
+function Hardpoint:canInstall(module)
     return module.type == self.type and module.tier <= self.tier
 end
 
-function Hardpoints:removeModule()
+function Hardpoint:removeModule()
     self.installed = nil
 end
 
-return Hardpoints
+return Hardpoint

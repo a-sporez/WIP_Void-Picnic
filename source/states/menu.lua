@@ -1,5 +1,4 @@
-
-local Buttons      = require('source.classes.buttons.Button')
+local Buttons      = require('source.scenes.utility.interface.Button')
 local GameState    = require('source.states.GameState')
 
 local Menu = {}
