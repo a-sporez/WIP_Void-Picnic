@@ -1,19 +1,16 @@
---luacheck: ignore dt
-
-local GameState     = require('source.states.GameState')
-local Buttons       = require('source.scenes.utility.interface.Button')
+local interface     = require('source.utility.interface.Interface')
 local WorldHandler  = require('source.scenes.world.worldHandler')
 local Void          = require('source.scenes.world.worldVoid')
 local Nebula        = require('source.scenes.world.worldNebula')
-local CanvasMonitor = require('source.scenes.utility.canvasMonitor')
-local Camera        = require('source.scenes.utility.Camera')
+local CanvasMonitor = require('source.utility.canvasMonitor')
+local Camera        = require('source.utility.Camera')
 
 local Running = {}
-local window_width = love.graphics.getWidth()
-local window_height = love.graphics.getHeight()
-local offset_x, offset_y = 48, 18
 local worldHandler
 local canvasMonitor
+
+local window_width = love.graphics.getWidth()
+local window_height = love.graphics.getHeight()
 
 function Running:enter()
     print("Entering Running state")
@@ -37,16 +34,7 @@ function Running:enter()
     Camera:init(window_width / 2, window_height / 2)
     Camera:setZoom(1)
 
-    self.menuButton = Buttons.new(
-        window_width - offset_x * 2,
-        window_height - offset_y * 2,
-        96,
-        36,
-        "MENU",
-        function() GameState:enableMenu() end,
-        nil,
-        'assets/sprites/button_1.png'
-    )
+    self.Interface = interface.new()
 end
 
 function Running:update(dt)
@@ -75,7 +63,7 @@ function Running:draw()
     Camera:detach()
     canvasMonitor:draw()
 
-    self.menuButton:draw(self.button_x, self.button_y, 14, 7)
+    self.Interface:draw()
 end
 
 function Running:keypressed(key)
@@ -96,10 +84,7 @@ function Running:keypressed(key)
 end
 
 function Running:mousepressed(x, y, button)
-    if button == 1 and self.menuButton then
-        self.menuButton:checkPressed(x, y, button)
-        print("click")
-    end
+    self.Interface:mousepressed(x, y, button)
 end
 
 return Running
