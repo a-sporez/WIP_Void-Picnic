@@ -1,18 +1,15 @@
+local vector = require('libraries.vector')
 local Mothership = {}
 
-function Mothership:new(x, y, width, height, max_speed, hardpoints)
-    local midX = love.graphics.getWidth() / 2
-    local midY = love.graphics.getHeight() / 2
+function Mothership:new(x, y, width, height, hardpoints)
     local obj = {
-        x = x or midX,
-        y = y or midY,
+        position = vector(x, y),
+        velocity = vector(0, 0),
+        friction = 0.99,
         width = width or 256,
         height = height or 192,
-        speed = 0,
-        max_speed = max_speed or 10,
-        direction = {x = 0, y = -1}, -- normalized direction vector
-        state = 'active',
-        target = nil,
+        angle = 0,
+        state = 'passive',
         hardpoints = hardpoints or {}
     }
     setmetatable(obj, self)
@@ -20,61 +17,49 @@ function Mothership:new(x, y, width, height, max_speed, hardpoints)
     return obj
 end
 
+-- update the motherships position and declare state as conditions
 function Mothership:update(dt, input)
-    if  self.state == 'active' then
+    if  self.state == 'passive' then
         self:keypressed(input)
+        self:updatePassive(dt)
+        print("mothership passive update")
     elseif self.state == 'command' then
         self:updateCommand(dt)
+        print("mothership command update")
     end
     self:updatePosition(dt)
 end
 
-function Mothership:keypressed(key)
-    if key == 'up' then
-        self.direction.y = -1
-    elseif key == 'down' then
-        self.direction.y = 1
-    elseif key == 'left' then
-        self.direction.x = -1
-    elseif key == 'right' then
-        self.direction.x = 1
-    else
-        self.direction = {x = 0, y = 0}
-    end
+function Mothership:updatePassive(dt)
+    
 end
 
 function Mothership:updateCommand(dt)
-    if self.target then
-        local dx = self.target.x - self.x
-        local dy = self.target.y - self.y
-        local dist = math.sqrt(dx^2 + dy^2)
-        if dist > 1 then
-            self.direction.x = dx / dist
-            self.direction.y = dy / dist
-            self.speed = self.max_speed
-        else
-            self.direction = {x = 0, y = 0}
-            self.speed = 0
-        end
-    end
+    
 end
 
 function Mothership:updatePosition(dt)
-    self.x = self.x + self.direction.x * self.speed * dt
-    self.y = self.y + self.direction.x * self.speed * dt
+    self.position = self.position + self.velocity * dt
+    self.velocity = self.velocity * self.friction
 end
 
-function Mothership:switchCommand(newState, target)
+function Mothership:addHardpoint(hardpoint)
+    table.insert(self.hardpoints, hardpoint)
+end
+
+function Mothership:switchCommand(newState)
     self.state = newState
-    if newState == 'command' and target then
-        self.target = target
-    else
-        self.target = nil
-    end
 end
 
 function Mothership:draw()
-    love.graphics.rectangle('line', self.x, self.y, self.width, self.height)
+    love.graphics.push()
+    love.graphics.translate(self.position.x, self.position.y)
+    love.graphics.rotate(self.angle)
+    love.graphics.rectangle('line', -self.width / 2, -self.height / 2, self.width, self.height)
+    for _, hp in ipairs(self.hardpoints) do
+        hp:draw(self.position, self.angle)
+    end
+    love.graphics.pop()
 end
 
 return Mothership
