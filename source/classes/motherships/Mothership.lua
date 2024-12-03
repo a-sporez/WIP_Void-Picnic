@@ -4,7 +4,7 @@ local Mothership = {}
 function Mothership:new(x, y, width, height, hardpoints)
     local obj = {
         position = vector(x, y),
-        velocity = vector(0, 0),
+        velocity = vector(10, 10),
         friction = 0.99,
         width = width or 256,
         height = height or 192,
@@ -22,10 +22,10 @@ function Mothership:update(dt, input)
     if  self.state == 'passive' then
         self:keypressed(input)
         self:updatePassive(dt)
-        print("mothership passive update")
+        print("[DEBUG] mothership passive update")
     elseif self.state == 'command' then
         self:updateCommand(dt)
-        print("mothership command update")
+        print("[DEBUG] mothership command update")
     end
     self:updatePosition(dt)
 end
@@ -56,10 +56,19 @@ function Mothership:draw()
     love.graphics.translate(self.position.x, self.position.y)
     love.graphics.rotate(self.angle)
     love.graphics.rectangle('line', -self.width / 2, -self.height / 2, self.width, self.height)
-    for _, hp in ipairs(self.hardpoints) do
+    print("[DEBUG] drawing ship at position:", self.position)
+    for i, hp in ipairs(self.hardpoints) do
+        print("[DEBUG] drawing hardpoint#"..i)
         hp:draw(self.position, self.angle)
     end
     love.graphics.pop()
+    -- this debug print is to verify the user data for the playership
+    print(string.format("[DEBUG] Drawing ship at: (%.2f, %.2f) | Angle: %.2f", self.position.x, self.position.y, self.angle))
+end
+
+function Mothership:keypressed(input)
+    -- Placeholder for keypress logic
+    print("[DEBUG] Key pressed: ", input)
 end
 
 return Mothership

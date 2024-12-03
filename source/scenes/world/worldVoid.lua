@@ -8,18 +8,18 @@ local SurveyDrone   = require('source.classes.drones.surveyDrone')
 local Void = World:new(4000, 4000)
 
 function Void:init()
-    print("Initializing Void")
+    print("[DEBUG] Initializing Void")
     self.survey2 = self:addEntity(SurveyDrone:new(600, 600))
 end
 
 function Void:update(dt)
-    print("Updating Void World")
+    print("[DEBUG] Updating Void World")
     self.survey2:move(-10, -10, dt)
     World.update(self, dt)
 end
 
 function Void:draw()
-    print("Drawing Void World")
+    print("[DEBUG] Drawing Void World")
     love.graphics.print("World: Void", 10, 30)
     World.draw(self)
 end

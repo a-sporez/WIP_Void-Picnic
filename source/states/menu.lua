@@ -48,11 +48,11 @@ end
 function Menu:mousepressed(x, y, button)
     if button == 1 and self.exitButton then
         self.exitButton:checkPressed(x, y, button)
-        print("click")
+        print("[DEBUG] exitButton click")
     end
     if button == 1 and self.playButton then
         self.playButton:checkPressed(x, y, button)
-        print("click")
+        print("[DEBUG] playButton click")
     end
 end
 

@@ -20,7 +20,7 @@ function Hardpoint:installModule(module)
             self.installed = module
             return true
         else
-            return false, "module incompatible"
+            return false, "[ERROR] module incompatible"
         end
     end
 end
@@ -35,11 +35,18 @@ function Hardpoint:removeModule()
 end
 
 function Hardpoint:draw(parentPosition, parentAngle)
-    local pos = parentPosition + self.mount:rotated(parentAngle)
+    love.graphics.push()
+    local rotatedOffset = self.mount:rotated(parentAngle)
+    local pos = parentPosition + rotatedOffset
+    print(string.format(
+        "[DEBUG] Hardpoint at: (%.2f, %.2f) | Parent: (%.2f, %.2f) | Offset: (%.2f, %.2f)",
+        pos.x, pos.y, parentPosition.x, parentPosition.y, rotatedOffset.x, rotatedOffset.y
+    ))
     love.graphics.circle('line', pos.x, pos.y, 5)
-    if self.module then
-        self.module:draw(pos)
+    if self.installed and self.installed.draw then
+        self.installed:draw(pos, parentAngle)
     end
+    love.graphics.pop()
 end
 
 return Hardpoint

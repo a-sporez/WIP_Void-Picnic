@@ -9,18 +9,18 @@ function World:new(width, height)
     }
     setmetatable(world, self)
     self.__index = self
-    print("World created with dimensions:", width, height)
+    print("[DEBUG] World created with dimensions:", width, height)
     return world
 end
 
 function World:addEntity(entity)
     table.insert(self.entities, entity)
-    print("Entity added at position:", entity.x, entity.y)
+    print("[DEBUG] Entity added at position:", entity.x, entity.y)
     return entity
 end
 
 function World:update(dt)
-    print("Updating World")
+    print("[DEBUG] Updating World")
     for _, entity in ipairs(self.entities) do
         if entity.update then
             entity:update(dt)
@@ -42,7 +42,7 @@ end
 
 function World:draw()
     self:drawGrid()
-    print("Drawing World")
+    print("[DEBUG] Drawing World")
     for _, entity in ipairs(self.entities) do
         if entity.draw then
             entity:draw()
