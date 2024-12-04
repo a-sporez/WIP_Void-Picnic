@@ -1,21 +1,22 @@
---luacheck: ignore dt
-local love          = require('love')
-local GameState     = require('source.states.gamestate')
-local Buttons       = require('source.classes.buttons.buttons')
+local interface     = require('source.utility.interface.Interface')
 local WorldHandler  = require('source.scenes.world.worldHandler')
-local Void          = require('source.scenes.world.Void')
-local Nebula        = require('source.scenes.world.Nebula')
-local CanvasMonitor = require('source.scenes.world.canvasMonitor')
+local Void          = require('source.scenes.world.worldVoid')
+local Nebula        = require('source.scenes.world.worldNebula')
+local CanvasMonitor = require('source.utility.canvasMonitor')
+local Camera        = require('source.utility.Camera')
+local Surveyor      = require('source.classes.motherships.Surveyor')
 
 local Running = {}
-local window_width = love.graphics.getWidth()
-local window_height = love.graphics.getHeight()
-local offset_x, offset_y = 48, 18
+-- holding instances in variables
 local worldHandler
 local canvasMonitor
+local playerShip
+
+local window_width = love.graphics.getWidth()
+local window_height = love.graphics.getHeight()
 
 function Running:enter()
-    print("Entering Running state")
+    print("[DEBUG] Entering Running state")
 
     worldHandler = WorldHandler:new()
 
@@ -29,47 +30,76 @@ function Running:enter()
 
     -- Set initial world
     worldHandler:switch('void')
-    print("Current world set to:", worldHandler.currentWorld)
+    print("[DEBUG] Current world set to:", worldHandler.currentWorld)
 
-    canvasMonitor = CanvasMonitor:new(window_width, window_height, worldHandler.currentWorld)
+    canvasMonitor = CanvasMonitor:create(window_width, window_height, worldHandler.currentWorld)
 
-    self.menuButton = Buttons.new(
-        window_width - offset_x * 2,
-        window_height - offset_y * 2,
-        96,
-        36,
-        "MENU",
-        function() GameState:enableMenu() end,
-        nil,
-        'assets/sprites/button_1.png'
-    )
+    Camera:init(window_width / 2, window_height / 2)
+    Camera:setZoom(1)
+
+    self.Interface = interface.new()
+
+    -- Initialize the Surveyor mothership here
+    ship = Surveyor:create(window_width / 2, window_height / 2)
+    -- add playerShip to currentWorld
+    table.insert(worldHandler.currentWorld.entities, ship)
 end
 
 function Running:update(dt)
-    print("Updating Running state")
+    print("[DEBUG] Updating Running state")
+-- update active world
     worldHandler:update(dt)
 
-    if canvasMonitor.currentWorld ~= worldHandler.currentWorld then
-        print("Updating CanvasMonitor's current world")
-        canvasMonitor:setWorld(worldHandler.currentWorld)
+    if ship then
+        ship:update(dt)
+    end
+-- update the camera to focus on the first entity in the world
+    local currentWorld = worldHandler.currentWorld
+    if currentWorld and #currentWorld.entities > 0 then
+        local focusEntity = currentWorld.entities[1]
+        Camera.update(focusEntity.x, focusEntity.y)
+    end
+
+    if canvasMonitor.currentWorld ~= currentWorld then
+        print("[DEBUG] Updating CanvasMonitor's current world")
+        canvasMonitor:setWorld(currentWorld)
     end
 end
 
 function Running:draw()
-    print("Drawing Running state")
+    print("[DEBUG] Drawing Running state")
     love.graphics.print("running", 10, 10)
 
+    Camera:attach()
     canvasMonitor:render()
+    if ship then
+        ship:draw()
+    end
+    Camera:detach()
     canvasMonitor:draw()
 
-    self.menuButton:draw(self.button_x, self.button_y, 14, 7)
+    self.Interface:draw()
+end
+
+function Running:keypressed(key)
+    local panning = 10
+    if key == '1' then
+        worldHandler:switch('void')
+    elseif key == '2' then
+        worldHandler:switch('nebula')
+    elseif key == 'up' then
+        Camera:move(0, -panning)
+    elseif key == 'down' then
+        Camera:move(0, panning)
+    elseif key == 'left' then
+        Camera:move(-panning, 0)
+    elseif key == 'right' then
+        Camera:move(panning, 0)
+    end
 end
 
 function Running:mousepressed(x, y, button)
-    if button == 1 and self.menuButton then
-        self.menuButton:checkPressed(x, y, button)
-        print("click")
-    end
+    self.Interface:mousepressed(x, y, button)
 end
 
 return Running

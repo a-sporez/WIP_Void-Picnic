@@ -1,5 +1,3 @@
-local love = require('love')
-
 local Drone = {}
 
 -- constructor function for the Drone class base method

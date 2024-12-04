@@ -1,8 +1,9 @@
-local Canvas = require('source.scenes.world.Canvas')
-
+local Canvas = require('source.utility.Canvas')
+-- this submodule declares the canvas where elements of the world are drawn.
 local canvasMonitor = setmetatable({}, {__index = Canvas})
 
-function canvasMonitor:new(width, height, currentWorld)
+-- pass dimensions and currentWorld from the base class
+function canvasMonitor:create(width, height, currentWorld)
     local canvas = Canvas:new(width, height, currentWorld)
     setmetatable(canvas, {__index = self})
     return canvas
@@ -13,12 +14,13 @@ function canvasMonitor:setWorld(world)
     self.currentWorld = world
 end
 
+-- 
 function canvasMonitor:render()
     if not self.currentWorld then
-        print("No current world to render")
+        print("[ERROR] No current world to render")
         return
     end
-    print("Rendering canvas for world")
+    print("[DEBUG] Rendering canvas for world")
     self:start()
     self.currentWorld:draw()
     self:stop()

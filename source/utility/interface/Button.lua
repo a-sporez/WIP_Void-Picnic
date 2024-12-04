@@ -1,4 +1,3 @@
-local love = require('love')
 local Button = {}
 Button.__index = Button
 

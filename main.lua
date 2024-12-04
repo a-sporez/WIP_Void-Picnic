@@ -1,8 +1,11 @@
-local love              = require('love')
-local GameState         = require('source.states.gamestate')
-local Menu              = require('source.states.menu')
+--[[
+callbacks are passed to GameState base classes.
+--]]
+local GameState     = require('source.states.GameState')
+local Menu          = require('source.states.menu')
 
 function love.load()
+    love.keyboard.setKeyRepeat(true)
     GameState:switch(Menu)
 end
 

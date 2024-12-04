@@ -1,4 +1,4 @@
-local love = require('love')
+
 local worldHandler = {}
 worldHandler.__index = worldHandler
 
@@ -21,7 +21,7 @@ function worldHandler:switch(name)
     if self.worlds[name] then
         self.currentWorld = self.worlds[name]
     else
-        error("world '"..name.."' not found!")
+        error("[ERROR] world '"..name.."' not found!")
     end
 end
 
@@ -32,7 +32,7 @@ function worldHandler:update(dt)
 end
 
 function worldHandler:draw()
-    love.graphics.print("World: "..self.currentWorld, 10, 10)
+    love.graphics.print("[DEBUG] World: "..self.currentWorld, 10, 10)
     if self.currentWorld then
         self.currentWorld:draw()
     end

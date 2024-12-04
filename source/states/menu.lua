@@ -1,6 +1,5 @@
-local love         = require('love')
-local Buttons      = require('source.classes.buttons.buttons')
-local GameState    = require('source.states.gamestate')
+local Buttons      = require('source.utility.interface.Button')
+local GameState    = require('source.states.GameState')
 
 local Menu = {}
 local window_width = love.graphics.getWidth()
@@ -49,11 +48,11 @@ end
 function Menu:mousepressed(x, y, button)
     if button == 1 and self.exitButton then
         self.exitButton:checkPressed(x, y, button)
-        print("click")
+        print("[DEBUG] exitButton click")
     end
     if button == 1 and self.playButton then
         self.playButton:checkPressed(x, y, button)
-        print("click")
+        print("[DEBUG] playButton click")
     end
 end
 
