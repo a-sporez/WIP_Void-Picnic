@@ -10,7 +10,7 @@ function Mothership:new(x, y, width, height, hardpoints)
         height = height or 192,
         angle = 0,
         state = 'passive',
-        hardpoints = hardpoints or {}
+        hardpoints = hardpoints
     }
     setmetatable(obj, self)
     self.__index = self
@@ -59,15 +59,16 @@ function Mothership:draw()
     print("[DEBUG] drawing ship at position:", self.position)
     for i, hp in ipairs(self.hardpoints) do
         print("[DEBUG] drawing hardpoint#"..i)
-        hp:draw(self.position, self.angle)
+-- Pass the local origin, the hardpoints are already being transformed.
+        hp:draw({x = 0, y = 0}, 0)
     end
     love.graphics.pop()
-    -- this debug print is to verify the user data for the playership
+-- this debug print is to verify the user data for the playership
     print(string.format("[DEBUG] Drawing ship at: (%.2f, %.2f) | Angle: %.2f", self.position.x, self.position.y, self.angle))
 end
 
 function Mothership:keypressed(input)
-    -- Placeholder for keypress logic
+-- Placeholder for keypress logic
     print("[DEBUG] Key pressed: ", input)
 end
 
