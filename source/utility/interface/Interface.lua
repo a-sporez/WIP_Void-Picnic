@@ -1,11 +1,14 @@
-local Button = require "source.utility.interface.Button"
-local GameState = require "source.states.GameState"
+local Button = require ('source.utility.interface.Button')
+local GameState = require ('source.states.GameState')
+local Console = require('source.utility.Console')
 local Interface = {}
 Interface.__index = Interface
 
 local window_width = love.graphics.getWidth()
 local window_height = love.graphics.getHeight()
 local offset_x, offset_y = 48, 18
+
+local console = Console:new()
 
 function Interface.new()
     local self = setmetatable({}, Interface)
@@ -29,7 +32,16 @@ function Interface.new()
 end
 
 function Interface:draw()
+    console:draw()
     self.menuButton:draw(self.button_x, self.button_y, 14, 7)
+end
+
+function Interface:textinput(key)
+    console:textinput(key)
+end
+
+function Interface:keypressed(key)
+    console:keypressed(key)
 end
 
 function Interface:mousepressed(x, y, button)

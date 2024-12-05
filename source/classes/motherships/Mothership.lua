@@ -12,9 +12,8 @@ function Mothership:new(x, y, width, height, hardpoints)
         state = 'passive',
         hardpoints = hardpoints
     }
-    setmetatable(obj, self)
     self.__index = self
-    return obj
+    return setmetatable(obj, self)
 end
 
 -- update the motherships position and declare state as conditions

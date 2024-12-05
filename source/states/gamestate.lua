@@ -39,6 +39,12 @@ function GameState:mousepressed(x, y, button)
     end
 end
 
+function GameState:textinput(key)
+    if self.currentState and self.currentState.textinput then
+        self.currentState:textinput(key)
+    end
+end
+
 function GameState:keypressed(key)
     if self.currentState and self.currentState.keypressed then
         self.currentState:keypressed(key)
