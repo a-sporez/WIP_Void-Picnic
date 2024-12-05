@@ -81,6 +81,10 @@ function Running:draw()
     self.Interface:draw()
 end
 
+function Running:textinput(key)
+    self.Interface:textinput(key)
+end
+
 function Running:keypressed(key)
     local panning = 10
     if key == '1' then
@@ -96,6 +100,7 @@ function Running:keypressed(key)
     elseif key == 'right' then
         Camera:move(panning, 0)
     end
+    self.Interface:keypressed(key)
 end
 
 function Running:mousepressed(x, y, button)
