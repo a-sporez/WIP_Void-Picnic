@@ -1,16 +1,18 @@
 local vector = require('libraries.vector')
 local Mothership = {}
 
-function Mothership:new(x, y, width, height, hardpoints)
+function Mothership:new(x, y, width, height, hardpoints, sprite_path)
+    local sprt = love.graphics.newImage(sprite_path)
     local obj = {
         position = vector(x, y),
         velocity = vector(10, 10),
         friction = 0.99,
         width = width or 256,
-        height = height or 192,
+        height = height or 128,
         angle = 0,
         state = 'passive',
-        hardpoints = hardpoints
+        hardpoints = hardpoints,
+        sprite = sprt
     }
     self.__index = self
     return setmetatable(obj, self)
@@ -55,6 +57,7 @@ function Mothership:draw()
     love.graphics.translate(self.position.x, self.position.y)
     love.graphics.rotate(self.angle)
     love.graphics.rectangle('line', -self.width / 2, -self.height / 2, self.width, self.height)
+    love.graphics.draw(self.sprite, -self.width / 2, -self.height / 2)
     print("[DEBUG] drawing ship at position:", self.position)
     for i, hp in ipairs(self.hardpoints) do
         print("[DEBUG] drawing hardpoint#"..i)
