@@ -4,13 +4,13 @@ local Void          = require('source.scenes.world.worldVoid')
 local Nebula        = require('source.scenes.world.worldNebula')
 local CanvasMonitor = require('source.utility.canvasMonitor')
 local Camera        = require('source.utility.Camera')
-local Surveyor      = require('source.classes.motherships.Surveyor')
+local Surveyor      = require('source.classes.vessels.surveyor')
 
 local Running = {}
 -- holding instances in variables
 local worldHandler
 local canvasMonitor
-local playerShip
+local ship
 
 local window_width = love.graphics.getWidth()
 local window_height = love.graphics.getHeight()
