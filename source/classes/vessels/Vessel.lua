@@ -6,7 +6,7 @@ function Vessel:new(x, y, width, height, hardpoints, spritePath)
     local obj = {
         position = vector(x, y),
         velocity = vector(10, 10),
-        friction = 0.99,
+        friction = 0.995,
         width = width or 256,
         height = height or 128,
         angle = 0,

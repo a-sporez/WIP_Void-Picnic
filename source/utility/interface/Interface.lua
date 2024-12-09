@@ -16,7 +16,7 @@ function Interface.new()
 
 -- this is the method to add new buttons
     self.menuButton = Button.new(
-        window_width - offset_x * 2,
+        window_width - offset_x * 2 - 426,
         window_height - offset_y * 2,
         96,
         36,

@@ -10,7 +10,7 @@ local Running = {}
 -- holding instances in variables
 local worldHandler
 local canvasMonitor
-local ship
+local playerShip
 
 local window_width = love.graphics.getWidth()
 local window_height = love.graphics.getHeight()
@@ -39,10 +39,10 @@ function Running:enter()
 
     self.Interface = interface.new()
 
-    -- Initialize the Surveyor mothership here
-    ship = Surveyor:create(window_width / 2, window_height / 2)
+    -- Initialize the Surveyor playerShip here
+    playerShip = Surveyor:create(window_width / 2, window_height / 2)
     -- add playerShip to currentWorld
-    table.insert(worldHandler.currentWorld.entities, ship)
+    table.insert(worldHandler.currentWorld.entities, playerShip)
 end
 
 function Running:update(dt)
@@ -50,8 +50,8 @@ function Running:update(dt)
 -- update active world
     worldHandler:update(dt)
 
-    if ship then
-        ship:update(dt)
+    if playerShip then
+        playerShip:update(dt)
     end
 -- update the camera to focus on the first entity in the world
     local currentWorld = worldHandler.currentWorld
@@ -72,8 +72,8 @@ function Running:draw()
 
     Camera:attach()
     canvasMonitor:render()
-    if ship then
-        ship:draw()
+    if playerShip then
+        playerShip:draw()
     end
     Camera:detach()
     canvasMonitor:draw()
