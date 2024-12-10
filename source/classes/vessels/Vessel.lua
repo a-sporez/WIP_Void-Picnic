@@ -1,9 +1,12 @@
 local vector = require('libraries.vector')
+local colors = require('source.lib.colors')
 local Vessel = {}
 
 function Vessel:new(x, y, width, height, hardpoints, spritePath)
     local sprt = love.graphics.newImage(spritePath)
     local obj = {
+        target = nil,
+        selected = false,
         position = vector(x, y),
         velocity = vector(10, 10),
         friction = 0.995,
@@ -12,15 +15,27 @@ function Vessel:new(x, y, width, height, hardpoints, spritePath)
         angle = 0,
         state = 'passive',
         hardpoints = hardpoints,
-        sprite = sprt,
-        hangar = {
-            capacity = 10,
-            occupied = 0,
-            modules = {}
-        }
+        sprite = sprt
     }
     self.__index = self
     return setmetatable(obj, self)
+end
+
+function Vessel:toggleSelected()
+    self.selected = not self.selected
+end
+
+function Vessel:mousepressed(mouse_x, mouse_y, cursor_radius)
+    if (mouse_x + cursor_radius >= self.position.x and
+        mouse_x - cursor_radius <= self.position.x + self.width) and
+        (mouse_y + cursor_radius >= self.position.y and
+        mouse_y - cursor_radius <= self.position.y + self.height) then
+        if self.selected then
+            self.selected = false
+        else
+            self.selected = true
+        end
+    end
 end
 
 function Vessel:storeModule(module)
@@ -93,6 +108,11 @@ function Vessel:draw()
     love.graphics.push()
     love.graphics.translate(self.position.x, self.position.y)
     love.graphics.rotate(self.angle)
+    if self.selected then
+        love.graphics.setColor(colors.green)
+    else
+        love.graphics.setColor(colors.light_grey)
+    end
     love.graphics.rectangle('line', -self.width / 2, -self.height / 2, self.width, self.height)
     love.graphics.draw(self.sprite, -self.width / 2, -self.height / 2)
     print("[DEBUG] drawing ship at position:", self.position)

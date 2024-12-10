@@ -1,4 +1,4 @@
-local Canvas = require('source.utility.Canvas')
+local Canvas = require('source.utility.canvas.Canvas')
 -- this is where UI elements should be drawn
 local canvasInterface = setmetatable({}, {__index = Canvas})
 

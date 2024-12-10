@@ -2,7 +2,7 @@ local interface     = require('source.utility.interface.Interface')
 local WorldHandler  = require('source.scenes.world.worldHandler')
 local Void          = require('source.scenes.world.worldVoid')
 local Nebula        = require('source.scenes.world.worldNebula')
-local CanvasMonitor = require('source.utility.canvasMonitor')
+local CanvasMonitor = require('source.utility.canvas.canvasMonitor')
 local Camera        = require('source.utility.Camera')
 local Surveyor      = require('source.classes.vessels.surveyor')
 
@@ -99,12 +99,17 @@ function Running:keypressed(key)
         Camera:move(-panning, 0)
     elseif key == 'right' then
         Camera:move(panning, 0)
+    elseif key == 'pageup' then
+        Camera:adjustZoom(0.1)
+    elseif key == 'pagedown' then
+        Camera:adjustZoom(-0.1)
     end
     self.Interface:keypressed(key)
 end
 
 function Running:mousepressed(x, y, button)
     self.Interface:mousepressed(x, y, button)
+    playerShip:mousepressed(x, y, button)
 end
 
 return Running

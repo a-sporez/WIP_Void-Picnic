@@ -1,11 +1,12 @@
 local vector = require('libraries.vector')
 local Hardpoint = {}
 
-function Hardpoint:new(name, type, tier, mount_x, mount_y, width, height)
+function Hardpoint:new(name, type, cpu, pwg, mount_x, mount_y, width, height)
     local obj = {
         name = name,
-        type = type, -- structure > hull > core
-        tier = tier, -- 1 to 4
+        type = type,
+        cpu = cpu,
+        pwg = pwg,
         installed = nil,
         occupied = false,
         mount = vector(mount_x, mount_y),
@@ -29,7 +30,7 @@ function Hardpoint:installModule(module)
 end
 
 function Hardpoint:canInstall(module)
-    return module.type == self.type and module.tier <= self.tier
+    return module.type == self.type
 end
 
 function Hardpoint:removeModule()

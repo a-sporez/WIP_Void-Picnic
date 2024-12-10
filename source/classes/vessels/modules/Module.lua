@@ -1,4 +1,3 @@
-
 local vector = require('libraries.vector')
 local Module = {}
 
