@@ -3,16 +3,17 @@ Button.__index = Button
 
 function Button.new(x, y, width, height, text, func, func_param, sprite_path)
     local self = setmetatable({}, Button)
+    local sprt = love.graphics.newImage(sprite_path)
     self.x = x
     self.y = y
-    self.width = width
-    self.height = height
+    self.width = width or sprt:getWidth()
+    self.height = height or sprt:getHeight()
     self.text = text or "<none>"
     self.func = func or function() print("no function") end
     self.func_param = func_param
     self.button_x = x
     self.button_y = y
-    self.sprite = love.graphics.newImage(sprite_path)
+    self.sprite = sprt
     return self
 end
 

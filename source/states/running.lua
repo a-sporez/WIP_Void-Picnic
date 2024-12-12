@@ -1,10 +1,10 @@
-local interface     = require('source.utility.interface.Interface')
+local interface     = require('source.utility.canvas.Interface')
 local WorldHandler  = require('source.scenes.world.worldHandler')
 local Void          = require('source.scenes.world.worldVoid')
 local Nebula        = require('source.scenes.world.worldNebula')
-local CanvasMonitor = require('source.utility.canvasMonitor')
+local CanvasMonitor = require('source.utility.canvas.canvasMonitor')
 local Camera        = require('source.utility.Camera')
-local Surveyor      = require('source.classes.motherships.Surveyor')
+local Surveyor      = require('source.classes.vessels.surveyor')
 
 local Running = {}
 -- holding instances in variables
@@ -37,12 +37,12 @@ function Running:enter()
     Camera:init(window_width / 2, window_height / 2)
     Camera:setZoom(1)
 
-    self.Interface = interface.new()
+    self.Interface = interface:create(window_width, window_height)
 
-    -- Initialize the Surveyor mothership here
-    ship = Surveyor:create(window_width / 2, window_height / 2)
+    -- Initialize the Surveyor playerShip here
+    playerShip = Surveyor:create(window_width / 2, window_height / 2)
     -- add playerShip to currentWorld
-    table.insert(worldHandler.currentWorld.entities, ship)
+    table.insert(worldHandler.currentWorld.entities, playerShip)
 end
 
 function Running:update(dt)
@@ -50,8 +50,8 @@ function Running:update(dt)
 -- update active world
     worldHandler:update(dt)
 
-    if ship then
-        ship:update(dt)
+    if playerShip then
+        playerShip:update(dt)
     end
 -- update the camera to focus on the first entity in the world
     local currentWorld = worldHandler.currentWorld
@@ -72,12 +72,13 @@ function Running:draw()
 
     Camera:attach()
     canvasMonitor:render()
-    if ship then
-        ship:draw()
+    if playerShip then
+        playerShip:draw()
     end
     Camera:detach()
     canvasMonitor:draw()
 
+    self.Interface:render()
     self.Interface:draw()
 end
 
@@ -99,12 +100,17 @@ function Running:keypressed(key)
         Camera:move(-panning, 0)
     elseif key == 'right' then
         Camera:move(panning, 0)
+    elseif key == 'pageup' then
+        Camera:adjustZoom(0.1)
+    elseif key == 'pagedown' then
+        Camera:adjustZoom(-0.1)
     end
     self.Interface:keypressed(key)
 end
 
 function Running:mousepressed(x, y, button)
     self.Interface:mousepressed(x, y, button)
+    playerShip:mousepressed(x, y, button)
 end
 
 return Running

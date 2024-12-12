@@ -41,13 +41,14 @@ function World:drawGrid(cellSize)
 end
 
 function World:draw()
-    self:drawGrid()
-    print("[DEBUG] Drawing World")
+    love.graphics.setCanvas(self.canvas) -- Target the world canvas.
+    love.graphics.clear() -- Clear the canvas.
+    self:drawGrid() -- Draw the grid.
     for _, entity in ipairs(self.entities) do
-        if entity.draw then
-            entity:draw()
-        end
+        entity:draw()
+        print("[DEBUG] Entity position:", entity.x, entity.y)
     end
+    love.graphics.setCanvas() -- Reset to the main canvas.
 end
 
 return World

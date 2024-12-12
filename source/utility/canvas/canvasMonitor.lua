@@ -1,4 +1,4 @@
-local Canvas = require('source.utility.Canvas')
+local Canvas = require('source.utility.canvas.Canvas')
 -- this submodule declares the canvas where elements of the world are drawn.
 local canvasMonitor = setmetatable({}, {__index = Canvas})
 
