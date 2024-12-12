@@ -26,15 +26,21 @@ function Vessel:toggleSelected()
 end
 
 function Vessel:mousepressed(mouse_x, mouse_y, cursor_radius)
-    if (mouse_x + cursor_radius >= self.position.x and
-        mouse_x - cursor_radius <= self.position.x + self.width) and
-        (mouse_y + cursor_radius >= self.position.y and
-        mouse_y - cursor_radius <= self.position.y + self.height) then
-        if self.selected then
-            self.selected = false
-        else
-            self.selected = true
-        end
+    -- Translate mouse position relative to the vessel's position
+    local localMouseX = mouse_x - self.position.x
+    local localMouseY = mouse_y - self.position.y
+
+    -- Rotate mouse position into the vessel's local space
+    local rotatedX = localMouseX * math.cos(-self.angle) - localMouseY * math.sin(-self.angle)
+    local rotatedY = localMouseX * math.sin(-self.angle) + localMouseY * math.cos(-self.angle)
+
+    -- Check if the point is within the sprite's bounds
+    local halfWidth = self.width / 2
+    local halfHeight = self.height / 2
+
+    if rotatedX >= -halfWidth and rotatedX <= halfWidth and
+       rotatedY >= -halfHeight and rotatedY <= halfHeight then
+        self:toggleSelected()
     end
 end
 
@@ -110,10 +116,9 @@ function Vessel:draw()
     love.graphics.rotate(self.angle)
     if self.selected then
         love.graphics.setColor(colors.green)
-    else
-        love.graphics.setColor(colors.light_grey)
+        love.graphics.rectangle('line', -self.width / 2, -self.height / 2, self.width, self.height)
     end
-    love.graphics.rectangle('line', -self.width / 2, -self.height / 2, self.width, self.height)
+    love.graphics.setColor(1, 1, 1)
     love.graphics.draw(self.sprite, -self.width / 2, -self.height / 2)
     print("[DEBUG] drawing ship at position:", self.position)
     for i, hp in ipairs(self.hardpoints) do

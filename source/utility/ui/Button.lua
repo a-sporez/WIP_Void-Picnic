@@ -6,8 +6,8 @@ function Button.new(x, y, width, height, text, func, func_param, sprite_path)
     local sprt = love.graphics.newImage(sprite_path)
     self.x = x
     self.y = y
-    self.width = sprt:getWidth()
-    self.height = sprt:getHeight()
+    self.width = width or sprt:getWidth()
+    self.height = height or sprt:getHeight()
     self.text = text or "<none>"
     self.func = func or function() print("no function") end
     self.func_param = func_param

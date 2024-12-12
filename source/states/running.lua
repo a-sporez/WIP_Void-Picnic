@@ -1,4 +1,4 @@
-local interface     = require('source.utility.interface.Interface')
+local interface     = require('source.utility.canvas.Interface')
 local WorldHandler  = require('source.scenes.world.worldHandler')
 local Void          = require('source.scenes.world.worldVoid')
 local Nebula        = require('source.scenes.world.worldNebula')
@@ -37,7 +37,7 @@ function Running:enter()
     Camera:init(window_width / 2, window_height / 2)
     Camera:setZoom(1)
 
-    self.Interface = interface.new()
+    self.Interface = interface:create(window_width, window_height)
 
     -- Initialize the Surveyor playerShip here
     playerShip = Surveyor:create(window_width / 2, window_height / 2)
@@ -78,6 +78,7 @@ function Running:draw()
     Camera:detach()
     canvasMonitor:draw()
 
+    self.Interface:render()
     self.Interface:draw()
 end
 
