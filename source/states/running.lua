@@ -2,14 +2,14 @@ local interface     = require('source.utility.canvas.Interface')
 local WorldHandler  = require('source.scenes.world.worldHandler')
 local Void          = require('source.scenes.world.worldVoid')
 local Nebula        = require('source.scenes.world.worldNebula')
-local CanvasMonitor = require('source.utility.canvas.canvasMonitor')
+local monitor       = require('source.utility.canvas.Monitor')
 local Camera        = require('source.utility.Camera')
 local Surveyor      = require('source.classes.vessels.surveyor')
 
 local Running = {}
 -- holding instances in variables
 local worldHandler
-local canvasMonitor
+local Monitor
 local playerShip
 
 local window_width = love.graphics.getWidth()
@@ -32,7 +32,7 @@ function Running:enter()
     worldHandler:switch('void')
     print("[DEBUG] Current world set to:", worldHandler.currentWorld)
 
-    canvasMonitor = CanvasMonitor:create(window_width, window_height, worldHandler.currentWorld)
+    Monitor = monitor:create(window_width, window_height, worldHandler.currentWorld)
 
     Camera:init(window_width / 2, window_height / 2)
     Camera:setZoom(1)
@@ -60,9 +60,9 @@ function Running:update(dt)
         Camera.update(focusEntity.x, focusEntity.y)
     end
 
-    if canvasMonitor.currentWorld ~= currentWorld then
-        print("[DEBUG] Updating CanvasMonitor's current world")
-        canvasMonitor:setWorld(currentWorld)
+    if Monitor.currentWorld ~= currentWorld then
+        print("[DEBUG] Updating Monitor's current world")
+        Monitor:setWorld(currentWorld)
     end
 end
 
@@ -71,12 +71,12 @@ function Running:draw()
     love.graphics.print("running", 10, 10)
 
     Camera:attach()
-    canvasMonitor:render()
+    Monitor:render()
     if playerShip then
         playerShip:draw()
     end
     Camera:detach()
-    canvasMonitor:draw()
+    Monitor:draw()
 
     self.Interface:render()
     self.Interface:draw()
