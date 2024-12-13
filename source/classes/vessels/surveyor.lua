@@ -11,8 +11,8 @@ function Surveyor:create(x, y, width, height)
     local hardpoints = {
         Hardpoint:new('front_left', '8x8', 1, 1, 51, -13, 8, 8),
         Hardpoint:new('front_right', '8x8', 1, 1, 51, 5, 8, 8),
-        Hardpoint:new('core_left', '16x18', 1, 2, 5, 5, 16, 18),
-        Hardpoint:new('core_right', '16x18', 1, 2, 5, -23, 16, 18)
+        Hardpoint:new('core_left', '16x18', 2, 2, 5, 5, 16, 18),
+        Hardpoint:new('core_right', '16x18', 2, 2, 5, -23, 16, 18)
     }
 
     local hangar = {
