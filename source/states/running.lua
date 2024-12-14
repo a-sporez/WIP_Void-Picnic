@@ -4,13 +4,11 @@ local Void          = require('source.scenes.world.worldVoid')
 local Nebula        = require('source.scenes.world.worldNebula')
 local monitor       = require('source.utility.canvas.Monitor')
 local Camera        = require('source.utility.Camera')
-local Surveyor      = require('source.classes.vessels.surveyor')
 
 local Running = {}
 -- holding instances in variables
 local worldHandler
 local Monitor
-local playerShip
 
 local window_width = love.graphics.getWidth()
 local window_height = love.graphics.getHeight()
@@ -28,41 +26,37 @@ function Running:enter()
     nebulaWorld:init()
     worldHandler:addWorld('nebula', nebulaWorld)
 
-    -- Set initial world
+-- Set initial world
     worldHandler:switch('void')
     print("[DEBUG] Current world set to:", worldHandler.currentWorld)
 
+-- Initialize Monitor, which also initializes the playerShip
     Monitor = monitor:create(window_width, window_height, worldHandler.currentWorld)
 
     Camera:init(window_width / 2, window_height / 2)
     Camera:setZoom(1)
 
     self.Interface = interface:create(window_width, window_height)
-
-    -- Initialize the Surveyor playerShip here
-    playerShip = Surveyor:create(window_width / 2, window_height / 2)
-    -- add playerShip to currentWorld
-    table.insert(worldHandler.currentWorld.entities, playerShip)
 end
 
 function Running:update(dt)
     print("[DEBUG] Updating Running state")
--- update active world
+
+-- Update active world
     worldHandler:update(dt)
 
-    if playerShip then
-        playerShip:update(dt)
-    end
--- update the camera to focus on the first entity in the world
-    local currentWorld = worldHandler.currentWorld
-    if currentWorld and #currentWorld.entities > 0 then
-        local focusEntity = currentWorld.entities[1]
-        Camera.update(focusEntity.x, focusEntity.y)
+-- Update Monitor (handles playerShip and rendering logic)
+    Monitor:update(dt)
+
+-- Update the camera to focus on the playerShip
+    if Monitor.playerShip then
+        Camera.update(Monitor.playerShip.x, Monitor.playerShip.y)
     end
 
-    if Monitor.currentWorld ~= currentWorld then
+-- Keep the Monitor in sync with the current world
+    if Monitor.currentWorld ~= worldHandler.currentWorld then
         print("[DEBUG] Updating Monitor's current world")
-        Monitor:setWorld(currentWorld)
+        Monitor:setWorld(worldHandler.currentWorld)
     end
 end
 
@@ -70,17 +64,20 @@ function Running:draw()
     print("[DEBUG] Drawing Running state")
     love.graphics.print("running", 10, 10)
 
+-- Attach the camera to render world entities
     Camera:attach()
-    Monitor:render()
-    if playerShip then
-        playerShip:draw()
-    end
-    Camera:detach()
-    Monitor:draw()
 
+-- Render the world and the playerShip through the Monitor
+    Monitor:render()
+
+-- Detach the camera after rendering
+    Camera:detach()
+
+-- Render the interface (HUD or other UI)
     self.Interface:render()
     self.Interface:draw()
 end
+
 
 function Running:textinput(key)
     self.Interface:textinput(key)
@@ -110,7 +107,7 @@ end
 
 function Running:mousepressed(x, y, button)
     self.Interface:mousepressed(x, y, button)
-    playerShip:mousepressed(x, y, button)
+    Monitor:mousepressed(x, y, button)
 end
 
 return Running

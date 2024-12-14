@@ -12,7 +12,9 @@ function Surveyor:create(x, y, width, height)
         Hardpoint:new('front_left', '8x8', 1, 1, 51, -13, 8, 8),
         Hardpoint:new('front_right', '8x8', 1, 1, 51, 5, 8, 8),
         Hardpoint:new('core_left', '16x18', 2, 2, 5, 5, 16, 18),
-        Hardpoint:new('core_right', '16x18', 2, 2, 5, -23, 16, 18)
+        Hardpoint:new('core_right', '16x18', 2, 2, 5, -23, 16, 18),
+        Hardpoint:new('centre_left', '8x8', 1, 1, -14, -24, 8, 8),
+        Hardpoint:new('centre_right', '8x8', 1, 1, -14, 15, 8, 8)
     }
 
     local hangar = {
@@ -43,10 +45,10 @@ function Surveyor:create(x, y, width, height)
     self.__index = self
 
 -- Additional debug print to confirm object initialization
-    print("[DEBUG] CPU initialized: capacity = " .. cpu.capacity .. ", occupied = " .. cpu.occupied)
-    print("[DEBUG] Powergrid initialized: capacity = " .. powergrid.capacity .. ", occupied = " .. powergrid.occupied)
-    print("[DEBUG] Hangar initialized: capacity = " .. hangar.capacity .. ", occupied = " .. hangar.occupied)
-    print("[DEBUG] Surveyor created with attributes:")
+    print("[DEBUG-SRVYR] CPU initialized: capacity = " .. cpu.capacity .. ", occupied = " .. cpu.occupied)
+    print("[DEBUG-SRVYR] Powergrid initialized: capacity = " .. powergrid.capacity .. ", occupied = " .. powergrid.occupied)
+    print("[DEBUG-SRVYR] Hangar initialized: capacity = " .. hangar.capacity .. ", occupied = " .. hangar.occupied)
+    print("[DEBUG-SRVYR] Surveyor created with attributes:")
     print("  Position: (" .. x .. ", " .. y .. ")")
     print("  Hardpoints: " .. #hardpoints)
     print("  Max Speed: " .. obj.maxSpeed)
@@ -55,11 +57,11 @@ function Surveyor:create(x, y, width, height)
 end
 
 function Surveyor:updatePassive(dt)
-    print("[DEBUG] Surveyor passive state updating.")
+    print("[DEBUG-SRVYR] Surveyor passive state updating.")
 end
 
 function Surveyor:updateCommand(dt)
-    print("[DEBUG] Surveyor command state updating.")
+    print("[DEBUG-SRVYR] Surveyor command state updating.")
 end
 
 return Surveyor
