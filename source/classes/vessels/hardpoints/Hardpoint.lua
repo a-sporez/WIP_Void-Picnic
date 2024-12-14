@@ -24,7 +24,7 @@ function Hardpoint:installModule(module)
             self.installed = module
             return true
         else
-            return false, "[ERROR] module incompatible"
+            return false, "[ERROR-HRDPTS] module incompatible"
         end
     end
 end
@@ -43,7 +43,7 @@ function Hardpoint:draw(parentPosition, parentAngle)
     local rotatedOffset = self.mount:rotated(parentAngle)
     local pos = parentPosition + rotatedOffset
     print(string.format(
-        "[DEBUG] Hardpoint at: (%.2f, %.2f) | Parent: (%.2f, %.2f) | Offset: (%.2f, %.2f)",
+        "[DEBUG-HRDPTS] Hardpoint at: (%.2f, %.2f) | Parent: (%.2f, %.2f) | Offset: (%.2f, %.2f)",
         pos.x, pos.y, parentPosition.x, parentPosition.y, rotatedOffset.x, rotatedOffset.y
     ))
     love.graphics.rectangle('line', pos.x, pos.y, self.width, self.height)

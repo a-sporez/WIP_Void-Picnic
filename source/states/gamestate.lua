@@ -11,6 +11,10 @@ function GameState:switch(state)
             self.currentState:enter()
         end
     end
+    if not state then
+        print("[ERROR-GameState] Attempted to switch to a nil state")
+        return
+    end
 end
 
 function GameState:enableRunning()

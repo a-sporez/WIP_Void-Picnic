@@ -27,7 +27,24 @@ end
 
 function Vessel:setTarget(x, y)
     self.target = vector(x, y)
-    print(string.format("[DEBUG] Setting target to (%.2f, %.2f)", x, y))
+    print(string.format("[DEBUG-VESSEL] Setting target to (%.2f, %.2f)", x, y))
+end
+
+--[[
+TODO:
+    + store targets
+    + clear targets, max_reached, idle_10
+    + get current target and return output.
+--]]
+
+function Vessel:storeNav(target)
+    
+end
+
+function Vessel:clearTarget()
+    if self.target then
+        self.target = nil
+    end
 end
 
 function Vessel:mousepressed(mouse_x, mouse_y, button)
@@ -62,16 +79,16 @@ function Vessel:storeModule(module)
     if self.hangar.occupied < self.hangar.capacity then
         table.insert(self.hangar.modules, module)
         self.hangar.occupied = self.hangar.occupied + 1
-        print(string.format("[DEBUG] Module %s stored. Used: %d/%d", module.name, self.hangar.occupied, self.hangar.capacity))
+        print(string.format("[DEBUG-VESSEL] Module %s stored. Used: %d/%d", module.name, self.hangar.occupied, self.hangar.capacity))
         return true
     else
-        print("[ERROR] Hangar full.")
+        print("[ERROR-VESSEL] Hangar full.")
         return false
     end
 end
 
 function Vessel:listModules()
-    print("[DEBUG] Mods in hangar:")
+    print("[DEBUG-VESSEL] Mods in hangar:")
     for i, module in ipairs(self.hangar.modules) do
         print(string.format(" [%d] %s", i, module.name))
     end
@@ -82,7 +99,7 @@ function Vessel:removeModule(moduleName)
         if module.name == moduleName then
             table.remove(self.modules, i)
             self.hangar.capacity = self.hangar.capacity - 1
-            print(string.format("[DEBUG] Module %s removed."))
+            print(string.format("[DEBUG-VESSEL] Module %s removed."))
             return module
         end
     end
@@ -95,10 +112,10 @@ function Vessel:update(dt, input)
     if  self.state == 'passive' then
         self:keypressed(input)
         self:updatePassive(dt)
-        print("[DEBUG] Vessel passive update")
+        print("[DEBUG-VESSEL] Vessel passive update")
     elseif self.state == 'command' then
         self:updateCommand(dt)
-        print("[DEBUG] Vessel command update")
+        print("[DEBUG-VESSEL] Vessel command update")
     end
     self:updatePosition(dt)
 end
@@ -138,10 +155,10 @@ function Vessel:draw()
 
     love.graphics.draw(self.sprite, -self.width / 2, -self.height / 2)
 
-    print("[DEBUG] drawing ship at position:", self.position)
+    print("[DEBUG-VESSEL] drawing ship at position:", self.position)
 
     for i, hp in ipairs(self.hardpoints) do
-        print("[DEBUG] drawing hardpoint#"..i)
+        print("[DEBUG-VESSEL] drawing hardpoint#"..i)
 -- Pass the local origin, the hardpoints are already being transformed.
         hp:draw({x = 0, y = 0}, 0)
     end
@@ -155,13 +172,12 @@ function Vessel:draw()
         love.graphics.setColor(1, 1, 1)
     end
 
--- this debug print is to verify the user data for the playership
-    print(string.format("[DEBUG] Drawing ship at: (%.2f, %.2f) | Angle: %.2f", self.position.x, self.position.y, self.angle))
+-- this debug print is to verify the user positions for the ship and hardpoints.
+    print(string.format("[DEBUG-VESSEL] Drawing ship at: (%.2f, %.2f) | Angle: %.2f", self.position.x, self.position.y, self.angle))
 end
 
 function Vessel:keypressed(input)
 -- Placeholder for keypress logic
-    print("[DEBUG] Key pressed: ", input)
 end
 
 return Vessel
