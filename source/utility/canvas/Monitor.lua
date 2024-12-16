@@ -2,10 +2,10 @@ local Canvas = require('source.utility.canvas.Canvas')
 local Surveyor = require('source.classes.vessels.surveyor')
 
 -- This submodule declares the canvas where elements of the world are drawn.
-local canvasMonitor = setmetatable({}, { __index = Canvas })
+local Monitor = setmetatable({}, { __index = Canvas })
 
 -- Pass dimensions and currentWorld from the base class
-function canvasMonitor:create(width, height, currentWorld)
+function Monitor:create(width, height, currentWorld)
     local canvas = Canvas:new(width, height, currentWorld)
     setmetatable(canvas, { __index = self })
 
@@ -15,7 +15,7 @@ function canvasMonitor:create(width, height, currentWorld)
 end
 
 -- Dynamically update the world that the canvas is rendering.
-function canvasMonitor:setWorld(world)
+function Monitor:setWorld(world)
     self.currentWorld = world
 -- If the playerShip isn't already in this world, add it
     if self.playerShip and not table.contains(world.entities, self.playerShip) then
@@ -24,7 +24,7 @@ function canvasMonitor:setWorld(world)
 end
 
 -- Initialize the player ship and add it to the current world.
-function canvasMonitor:initializePlayerShip(x, y)
+function Monitor:initializePlayerShip(x, y)
     if not self.currentWorld then
         print("[ERROR] Cannot initialize playerShip without a current world.")
         return
@@ -38,14 +38,14 @@ function canvasMonitor:initializePlayerShip(x, y)
 end
 
 -- Update method for the Monitor, including playerShip.
-function canvasMonitor:update(dt)
+function Monitor:update(dt)
     if self.playerShip then
         self.playerShip:update(dt)
     end
 end
 
 -- Render the world and the player ship.
-function canvasMonitor:render()
+function Monitor:render()
     if not self.currentWorld then
         print("[ERROR] No current world to render")
         return
@@ -64,10 +64,22 @@ function canvasMonitor:render()
 end
 
 -- Pass mouse events to the playerShip
-function canvasMonitor:mousepressed(x, y, button)
+function Monitor:mousepressed(x, y, button)
     if self.playerShip then
         self.playerShip:mousepressed(x, y, button)
     end
 end
 
-return canvasMonitor
+function Monitor:keypressed(key)
+    if self.playerShip then
+        self.playerShip:keypressed(key)
+    end
+end
+
+function Monitor:keyreleased(key)
+    if self.playerShip then
+        self.playerShip:keyreleased(key)
+    end
+end
+
+return Monitor

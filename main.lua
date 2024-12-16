@@ -28,3 +28,7 @@ end
 function love.keypressed(key)
     GameState:keypressed(key)
 end
+
+function love.keyreleased(key)
+    GameState:keyreleased(key)
+end

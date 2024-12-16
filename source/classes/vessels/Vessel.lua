@@ -13,7 +13,8 @@ function Vessel:new(x, y, width, height, hardpoints, spritePath)
         width = width or 256,
         height = height or 128,
         angle = 0,
-        state = 'passive',
+        rotation = 0,
+        rotation_speed = math.rad(90),
         hardpoints = hardpoints,
         sprite = sprt
     }
@@ -108,37 +109,26 @@ function Vessel:removeModule(moduleName)
 end
 
 -- update the Vessels position and declare state as conditions
-function Vessel:update(dt, input)
-    if  self.state == 'passive' then
-        self:keypressed(input)
-        self:updatePassive(dt)
-        print("[DEBUG-VESSEL] Vessel passive update")
-    elseif self.state == 'command' then
-        self:updateCommand(dt)
-        print("[DEBUG-VESSEL] Vessel command update")
-    end
+function Vessel:update(dt)
     self:updatePosition(dt)
 end
 
-function Vessel:updatePassive(dt)
-    -- TODO: create automated logic for base class
-end
-
-function Vessel:updateCommand(dt)
-    -- TODO: create manual control logic for base class
-end
-
 function Vessel:updatePosition(dt)
+    -- Update position
     self.position = self.position + self.velocity * dt
+
+    -- Apply friction to velocity
     self.velocity = self.velocity * self.friction
+
+    -- Smoothly decelerate rotation
+    self.rotation = self.rotation * self.friction
+
+    -- Update angle based on rotation
+    self.angle = self.angle + self.rotation * dt
 end
 
 function Vessel:addHardpoint(hardpoint)
     table.insert(self.hardpoints, hardpoint)
-end
-
-function Vessel:switchCommand(newState)
-    self.state = newState
 end
 
 function Vessel:draw()
@@ -176,8 +166,20 @@ function Vessel:draw()
     print(string.format("[DEBUG-VESSEL] Drawing ship at: (%.2f, %.2f) | Angle: %.2f", self.position.x, self.position.y, self.angle))
 end
 
-function Vessel:keypressed(input)
--- Placeholder for keypress logic
+function Vessel:keypressed(key)
+    -- Set angular velocity for rotation
+    if key == 'a' then
+        self.rotation = -self.rotation_speed  -- Rotate counterclockwise
+    elseif key == 'd' then
+        self.rotation = self.rotation_speed   -- Rotate clockwise
+    end
+end
+
+function Vessel:keyreleased(key)
+    -- Stop rotation when the key is released
+    if key == 'a' or key == 'd' then
+        self.rotation = 0
+    end
 end
 
 return Vessel

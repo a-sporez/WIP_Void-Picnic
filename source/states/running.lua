@@ -36,7 +36,7 @@ function Running:enter()
     Camera:init(window_width / 2, window_height / 2)
     Camera:setZoom(1)
 
-    self.Interface = interface:create(window_width, window_height)
+    Interface = interface:create(window_width, window_height)
 end
 
 function Running:update(dt)
@@ -74,13 +74,18 @@ function Running:draw()
     Camera:detach()
 
 -- Render the interface (HUD or other UI)
-    self.Interface:render()
-    self.Interface:draw()
+    Interface:render()
+    Interface:draw()
 end
 
 
 function Running:textinput(key)
-    self.Interface:textinput(key)
+    Interface:textinput(key)
+end
+
+function Running:mousepressed(x, y, button)
+    Interface:mousepressed(x, y, button)
+    Monitor:mousepressed(x, y, button)
 end
 
 function Running:keypressed(key)
@@ -102,12 +107,12 @@ function Running:keypressed(key)
     elseif key == 'pagedown' then
         Camera:adjustZoom(-0.1)
     end
-    self.Interface:keypressed(key)
+    Interface:keypressed(key)
+    Monitor:keypressed(key)
 end
 
-function Running:mousepressed(x, y, button)
-    self.Interface:mousepressed(x, y, button)
-    Monitor:mousepressed(x, y, button)
+function Running:keyreleased(key)
+    Monitor:keyreleased(key)
 end
 
 return Running
