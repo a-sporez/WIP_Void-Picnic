@@ -112,6 +112,7 @@ function Running:keypressed(key)
 end
 
 function Running:keyreleased(key)
+    Interface:keyreleased(key)
     Monitor:keyreleased(key)
 end
 

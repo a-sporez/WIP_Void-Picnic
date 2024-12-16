@@ -3,12 +3,15 @@ local colors = require('source.lib.colors')
 local Vessel = {}
 
 function Vessel:new(x, y, width, height, hardpoints, spritePath)
-    local sprt = love.graphics.newImage(spritePath)
+    local sprt = spritePath and love.graphics.newImage(spritePath) or nil
+    assert(sprt, "[ERROR-VESSEL] Invalid spritePath provided!")
+
     local obj = {
         target = nil,
         selected = false,
         position = vector(x, y),
-        velocity = vector(10, 10),
+        velocity = vector(0, 0),
+        max_velocity = 10,
         friction = 0.995,
         width = width or 256,
         height = height or 128,
@@ -62,18 +65,17 @@ function Vessel:mousepressed(mouse_x, mouse_y, button)
     local halfWidth = self.width / 2
     local halfHeight = self.height / 2
 
--- left mouse click to select and deselect
     if button == 1 then
         if rotatedX >= -halfWidth and rotatedX <= halfWidth and
-        rotatedY >= -halfHeight and rotatedY <= halfHeight then
+           rotatedY >= -halfHeight and rotatedY <= halfHeight then
             self:toggleSelected()
-        elseif button == 1 and self.selected then
+        else
             self.selected = false
         end
--- right mouse click to set the target destination
     elseif button == 2 and self.selected then
         self:setTarget(mouse_x, mouse_y)
     end
+    
 end
 
 function Vessel:storeModule(module)
@@ -104,7 +106,7 @@ function Vessel:removeModule(moduleName)
             return module
         end
     end
-    print(string.format("[ERROR] Module %s not found.", moduleName))
+    print(string.format("[DEBUG-VESSEL] Module %s removed.", moduleName))
     return nil
 end
 
@@ -159,26 +161,38 @@ function Vessel:draw()
         love.graphics.setColor(colors.red)
         love.graphics.line(self.position.x, self.position.y, self.target.x, self.target.y)
         love.graphics.circle('line', self.target.x, self.target.y, 5)
-        love.graphics.setColor(1, 1, 1)
+        love.graphics.setColor(1, 1, 1) -- Reset color
     end
 
 -- this debug print is to verify the user positions for the ship and hardpoints.
     print(string.format("[DEBUG-VESSEL] Drawing ship at: (%.2f, %.2f) | Angle: %.2f", self.position.x, self.position.y, self.angle))
 end
 
+function Vessel:applyThrust(thrust)
+    -- calculate forward direction based on ship angle
+    local direction = vector(math.cos(self.angle), math.sin(self.angle))
+    -- scale direction with thrust magnitude
+    local thrust_vector = direction * thrust
+    self.velocity = self.velocity + thrust_vector
+end
+
 function Vessel:keypressed(key)
     -- Set angular velocity for rotation
     if key == 'a' then
-        self.rotation = -self.rotation_speed  -- Rotate counterclockwise
+        self.rotation = -self.rotation_speed / 2 -- Rotate counterclockwise
     elseif key == 'd' then
-        self.rotation = self.rotation_speed   -- Rotate clockwise
+        self.rotation = self.rotation_speed / 2  -- Rotate clockwise
+    elseif key == 'w' then
+        self:applyThrust(10)
+    elseif key == 's' then
+        self:applyThrust(-10)
     end
 end
 
 function Vessel:keyreleased(key)
     -- Stop rotation when the key is released
     if key == 'a' or key == 'd' then
-        self.rotation = 0
+        self.rotation = self.rotation * self.friction
     end
 end
 

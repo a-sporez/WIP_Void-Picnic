@@ -33,7 +33,7 @@ function Surveyor:create(x, y, width, height)
         occupied = 0,
     }
 
-    local spritePath = 'assets/sprites/motherships/surveyor/ship1.png'
+    local spritePath = 'assets/sprites/motherships/surveyor/surveyor.png'
 
     local obj = Vessel.new(self, x, y, width, height, hardpoints, spritePath)
     obj.hangar = hangar
