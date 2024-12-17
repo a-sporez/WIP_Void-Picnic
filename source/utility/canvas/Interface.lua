@@ -74,7 +74,8 @@ function Interface:keypressed(key)
 end
 
 function Interface:keyreleased(key)
-    console:keyreleased(key)
+    -- TODO: keyreleased logic in concole
+--    console:keyreleased(key)
 end
 
 function Interface:mousepressed(x, y, button)
