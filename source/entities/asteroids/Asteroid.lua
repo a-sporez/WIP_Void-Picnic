@@ -1,4 +1,4 @@
-local vector = require('libraries.vector')
+local vector = require('libraries.hump.vector')
 local Asteroid = {}
 
 function Asteroid:new(x, y, width, height)

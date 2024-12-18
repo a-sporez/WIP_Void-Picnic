@@ -1,4 +1,4 @@
-local vector = require('libraries.vector')
+local vector = require('libraries.hump.vector')
 local Hardpoint = {}
 
 function Hardpoint:new(name, type, cpu, pwg, mount_x, mount_y, width, height)

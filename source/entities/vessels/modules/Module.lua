@@ -1,15 +1,16 @@
-local vector = require('libraries.vector')
+local vector = require('libraries.hump.vector')
 local Module = {}
 
 function Module:new(x, y, name, size, type, spritePath)
-    local obj = {
-        type = type,
-        name = name,
-        position = vector(x, y),
-        sprite = love.graphics.newImage(spritePath),
-        picked = false,
-        active = false,
-        size = size or 1
+    local sprt = love.graphics.newImage(spritePath)
+    local obj  = {
+        type        = type,
+        name        = name,
+        position    = vector(x, y),
+        sprite      = sprt,
+        picked      = false,
+        active      = false,
+        size        = size or 1
     }
     setmetatable(obj, self)
     self.__index = self

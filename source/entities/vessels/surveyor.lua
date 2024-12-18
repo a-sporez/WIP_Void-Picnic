@@ -1,5 +1,4 @@
 local Vessel = require("source.entities.vessels.Vessel")
-local vector = require('libraries.vector')
 local Hardpoint = require('source.entities.vessels.hardpoints.Hardpoint')
 
 local Surveyor = {}

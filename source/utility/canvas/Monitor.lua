@@ -1,12 +1,12 @@
-local Canvas = require('source.utility.canvas.Canvas')
-local Surveyor = require('source.entities.vessels.surveyor')
-local Camera   = require('source.utility.Camera')
-local Input    = require('source.utility.InputHandler')
+local Canvas        = require('source.utility.canvas.Canvas')
+local Surveyor      = require('source.entities.vessels.surveyor')
+local Camera        = require('source.utility.Camera')
+local Input         = require('source.utility.InputHandler')
 
 -- This submodule declares the canvas where elements of the world are drawn.
 local Monitor = setmetatable({}, { __index = Canvas })
 
-local window_width = love.graphics.getWidth()
+local window_width  = love.graphics.getWidth()
 local window_height = love.graphics.getHeight()
 local input = Input:new()
 -- Pass dimensions and currentWorld from the base class

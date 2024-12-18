@@ -1,4 +1,4 @@
-local vector = require('libraries.vector')
+local vector = require('libraries.hump.vector')
 local Drone = {}
 
 -- constructor function for the Drone class base method

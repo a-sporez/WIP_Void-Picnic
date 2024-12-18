@@ -1,4 +1,4 @@
-local camera = require('libraries.camera')
+local camera = require('libraries.hump.camera')
 
 local Camera = {}
 Camera.focus = nil
