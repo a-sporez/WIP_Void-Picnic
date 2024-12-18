@@ -1,5 +1,5 @@
 local vector = require('libraries.hump.vector')
-local colors = require('source.lib.colors')
+local colors = require('source.utility.colors')
 local Input  = require('source.utility.InputHandler')
 local Vessel = {}
 
