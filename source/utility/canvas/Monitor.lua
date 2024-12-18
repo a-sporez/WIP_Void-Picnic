@@ -67,10 +67,10 @@ function Monitor:handleInput()
     elseif input:continuous('pan_right') then
         Camera:move(panning, 0)
     end
-    if input:continuous('pageup') then
-        Camera:adjustZoom(0.1)
-    elseif input:continuous('pagedown') then
-        Camera:adjustZoom(-0.1)
+    if input:continuous('zoom_in') then
+        Camera:adjustZoom(0.01)
+    elseif input:continuous('zoom_out') then
+        Camera:adjustZoom(-0.01)
     end
 end
 
