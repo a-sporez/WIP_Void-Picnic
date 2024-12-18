@@ -1,5 +1,6 @@
 local vector = require('libraries.vector')
 local colors = require('source.lib.colors')
+local Input  = require('source.utility.InputHandler')
 local Vessel = {}
 
 function Vessel:new(x, y, width, height, hardpoints, spritePath)
@@ -19,7 +20,8 @@ function Vessel:new(x, y, width, height, hardpoints, spritePath)
         rotation = 0,
         rotation_speed = math.rad(90),
         hardpoints = hardpoints,
-        sprite = sprt
+        sprite = sprt,
+        input = Input:new()
     }
     self.__index = self
     return setmetatable(obj, self)
@@ -112,20 +114,30 @@ end
 
 -- update the Vessels position and declare state as conditions
 function Vessel:update(dt)
+    self.input:clear()
+    self:handleInput()
     self:updatePosition(dt)
 end
 
+function Vessel:handleInput()
+-- Check for movement input using the Input system
+    if self.input:continuous('forward') then
+        self:applyThrust(1)
+    elseif self.input:continuous('backward') then
+        self:applyThrust(-1)
+    end
+
+    if self.input:continuous('left_rot') then
+        self.rotation = -self.rotation_speed / 2  -- Rotate counterclockwise
+    elseif self.input:continuous('right_rot') then
+        self.rotation = self.rotation_speed / 2  -- Rotate clockwise
+    end
+end
+
 function Vessel:updatePosition(dt)
-    -- Update position
     self.position = self.position + self.velocity * dt
-
-    -- Apply friction to velocity
     self.velocity = self.velocity * self.friction
-
-    -- Smoothly decelerate rotation
     self.rotation = self.rotation * self.friction
-
-    -- Update angle based on rotation
     self.angle = self.angle + self.rotation * dt
 end
 
@@ -177,23 +189,11 @@ function Vessel:applyThrust(thrust)
 end
 
 function Vessel:keypressed(key)
-    -- Set angular velocity for rotation
-    if key == 'a' then
-        self.rotation = -self.rotation_speed / 2 -- Rotate counterclockwise
-    elseif key == 'd' then
-        self.rotation = self.rotation_speed / 2  -- Rotate clockwise
-    elseif key == 'w' then
-        self:applyThrust(10)
-    elseif key == 's' then
-        self:applyThrust(-10)
-    end
+    self.input:keypressed(key)
 end
 
 function Vessel:keyreleased(key)
-    -- Stop rotation when the key is released
-    if key == 'a' or key == 'd' then
-        self.rotation = self.rotation * self.friction
-    end
+    self.input:keyreleased(key)
 end
 
 return Vessel

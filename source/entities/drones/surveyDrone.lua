@@ -1,4 +1,4 @@
-local Drone = require('source.classes.drones.Drone')
+local Drone = require('source.entities.drones.Drone')
 -- this class is an extension of Drone class, adding color.
 local surveyDrone = Drone:new()
 

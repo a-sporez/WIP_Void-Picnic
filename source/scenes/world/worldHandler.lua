@@ -1,4 +1,3 @@
-
 local worldHandler = {}
 worldHandler.__index = worldHandler
 

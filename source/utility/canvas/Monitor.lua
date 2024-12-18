@@ -1,19 +1,20 @@
 local Canvas = require('source.utility.canvas.Canvas')
-local Surveyor = require('source.classes.vessels.surveyor')
+local Surveyor = require('source.entities.vessels.surveyor')
 local Camera   = require('source.utility.Camera')
+local Input    = require('source.utility.InputHandler')
 
 -- This submodule declares the canvas where elements of the world are drawn.
 local Monitor = setmetatable({}, { __index = Canvas })
 
 local window_width = love.graphics.getWidth()
 local window_height = love.graphics.getHeight()
-
+local input = Input:new()
 -- Pass dimensions and currentWorld from the base class
 function Monitor:create(width, height, currentWorld)
     local canvas = Canvas:new(width, height, currentWorld)
     setmetatable(canvas, { __index = self })
 
-    Camera:init(window_width / 2, window_height / 2)
+    Camera:new(window_width / 2, window_height / 2)
     Camera:setZoom(1)
 
 -- Initialize playerShip
@@ -25,7 +26,7 @@ end
 function Monitor:setWorld(world)
     self.currentWorld = world
 -- If the playerShip isn't already in this world, add it
-    if self.playerShip and not table.contains(world.entities, self.playerShip) then
+    if self.playerShip then
         table.insert(world.entities, self.playerShip)
     end
 end
@@ -46,9 +47,30 @@ end
 
 -- Update method for the Monitor, including playerShip.
 function Monitor:update(dt)
+    input:clear()
+    self:handleInput()
     if self.playerShip then
         self.playerShip:update(dt)
         Camera:update(self.playerShip.x, self.playerShip.y)
+    end
+end
+
+function Monitor:handleInput()
+    local panning = 10
+    if input:continuous('pan_up') then
+        Camera:move(0, -panning)
+    elseif input:continuous('pan_down') then
+        Camera:move(0, panning)
+    end
+    if input:continuous('pan_left') then
+        Camera:move(-panning, 0)
+    elseif input:continuous('pan_right') then
+        Camera:move(panning, 0)
+    end
+    if input:continuous('pageup') then
+        Camera:adjustZoom(0.1)
+    elseif input:continuous('pagedown') then
+        Camera:adjustZoom(-0.1)
     end
 end
 
@@ -81,29 +103,11 @@ function Monitor:mousepressed(x, y, button)
 end
 
 function Monitor:keypressed(key)
-    if self.playerShip then
-        self.playerShip:keypressed(key)
-    end
-    local panning = 10
-    if key == 'up' then
-        Camera:move(0, -panning)
-    elseif key == 'down' then
-        Camera:move(0, panning)
-    elseif key == 'left' then
-        Camera:move(-panning, 0)
-    elseif key == 'right' then
-        Camera:move(panning, 0)
-    elseif key == 'pageup' then
-        Camera:adjustZoom(0.1)
-    elseif key == 'pagedown' then
-        Camera:adjustZoom(-0.1)
-    end
+    input:keypressed(key)
 end
 
 function Monitor:keyreleased(key)
-    if self.playerShip then
-        self.playerShip:keyreleased(key)
-    end
+    input:keyreleased(key)
 end
 
 return Monitor

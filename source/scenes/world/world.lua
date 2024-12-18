@@ -1,4 +1,3 @@
-
 local World = {}
 
 function World:new(width, height)

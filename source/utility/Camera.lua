@@ -4,7 +4,7 @@ local Camera = {}
 Camera.focus = nil
 Camera.zoom = 1
 
-function Camera:init(x, y)
+function Camera:new(x, y)
     self.focus = camera(x, y)
 end
 
