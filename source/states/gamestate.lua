@@ -55,4 +55,10 @@ function GameState:keypressed(key)
     end
 end
 
+function GameState:keyreleased(key)
+    if self.currentState and self.currentState.keyreleased then
+        self.currentState:keyreleased(key)
+    end
+end
+
 return GameState

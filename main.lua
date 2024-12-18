@@ -5,7 +5,6 @@ local GameState     = require('source.states.GameState')
 local Menu          = require('source.states.menu')
 
 function love.load()
-    love.keyboard.setKeyRepeat(true)
     GameState:switch(Menu)
 end
 
@@ -27,4 +26,8 @@ end
 
 function love.keypressed(key)
     GameState:keypressed(key)
+end
+
+function love.keyreleased(key)
+    GameState:keyreleased(key)
 end

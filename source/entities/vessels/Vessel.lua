@@ -1,21 +1,27 @@
 local vector = require('libraries.vector')
 local colors = require('source.lib.colors')
+local Input  = require('source.utility.InputHandler')
 local Vessel = {}
 
 function Vessel:new(x, y, width, height, hardpoints, spritePath)
-    local sprt = love.graphics.newImage(spritePath)
+    local sprt = spritePath and love.graphics.newImage(spritePath) or nil
+    assert(sprt, "[ERROR-VESSEL] Invalid spritePath provided!")
+
     local obj = {
         target = nil,
         selected = false,
         position = vector(x, y),
-        velocity = vector(10, 10),
+        velocity = vector(0, 0),
+        max_velocity = 10,
         friction = 0.995,
         width = width or 256,
         height = height or 128,
         angle = 0,
-        state = 'passive',
+        rotation = 0,
+        rotation_speed = math.rad(90),
         hardpoints = hardpoints,
-        sprite = sprt
+        sprite = sprt,
+        input = Input:new()
     }
     self.__index = self
     return setmetatable(obj, self)
@@ -61,18 +67,17 @@ function Vessel:mousepressed(mouse_x, mouse_y, button)
     local halfWidth = self.width / 2
     local halfHeight = self.height / 2
 
--- left mouse click to select and deselect
     if button == 1 then
         if rotatedX >= -halfWidth and rotatedX <= halfWidth and
-        rotatedY >= -halfHeight and rotatedY <= halfHeight then
+           rotatedY >= -halfHeight and rotatedY <= halfHeight then
             self:toggleSelected()
-        elseif button == 1 and self.selected then
+        else
             self.selected = false
         end
--- right mouse click to set the target destination
     elseif button == 2 and self.selected then
         self:setTarget(mouse_x, mouse_y)
     end
+    
 end
 
 function Vessel:storeModule(module)
@@ -103,42 +108,41 @@ function Vessel:removeModule(moduleName)
             return module
         end
     end
-    print(string.format("[ERROR] Module %s not found.", moduleName))
+    print(string.format("[DEBUG-VESSEL] Module %s removed.", moduleName))
     return nil
 end
 
 -- update the Vessels position and declare state as conditions
-function Vessel:update(dt, input)
-    if  self.state == 'passive' then
-        self:keypressed(input)
-        self:updatePassive(dt)
-        print("[DEBUG-VESSEL] Vessel passive update")
-    elseif self.state == 'command' then
-        self:updateCommand(dt)
-        print("[DEBUG-VESSEL] Vessel command update")
-    end
+function Vessel:update(dt)
+    self.input:clear()
+    self:handleInput()
     self:updatePosition(dt)
 end
 
-function Vessel:updatePassive(dt)
-    -- TODO: create automated logic for base class
-end
+function Vessel:handleInput()
+-- Check for movement input using the Input system
+    if self.input:continuous('forward') then
+        self:applyThrust(1)
+    elseif self.input:continuous('backward') then
+        self:applyThrust(-1)
+    end
 
-function Vessel:updateCommand(dt)
-    -- TODO: create manual control logic for base class
+    if self.input:continuous('left_rot') then
+        self.rotation = -self.rotation_speed / 2  -- Rotate counterclockwise
+    elseif self.input:continuous('right_rot') then
+        self.rotation = self.rotation_speed / 2  -- Rotate clockwise
+    end
 end
 
 function Vessel:updatePosition(dt)
     self.position = self.position + self.velocity * dt
     self.velocity = self.velocity * self.friction
+    self.rotation = self.rotation * self.friction
+    self.angle = self.angle + self.rotation * dt
 end
 
 function Vessel:addHardpoint(hardpoint)
     table.insert(self.hardpoints, hardpoint)
-end
-
-function Vessel:switchCommand(newState)
-    self.state = newState
 end
 
 function Vessel:draw()
@@ -169,15 +173,27 @@ function Vessel:draw()
         love.graphics.setColor(colors.red)
         love.graphics.line(self.position.x, self.position.y, self.target.x, self.target.y)
         love.graphics.circle('line', self.target.x, self.target.y, 5)
-        love.graphics.setColor(1, 1, 1)
+        love.graphics.setColor(1, 1, 1) -- Reset color
     end
 
 -- this debug print is to verify the user positions for the ship and hardpoints.
     print(string.format("[DEBUG-VESSEL] Drawing ship at: (%.2f, %.2f) | Angle: %.2f", self.position.x, self.position.y, self.angle))
 end
 
-function Vessel:keypressed(input)
--- Placeholder for keypress logic
+function Vessel:applyThrust(thrust)
+    -- calculate forward direction based on ship angle
+    local direction = vector(math.cos(self.angle), math.sin(self.angle))
+    -- scale direction with thrust magnitude
+    local thrust_vector = direction * thrust
+    self.velocity = self.velocity + thrust_vector
+end
+
+function Vessel:keypressed(key)
+    self.input:keypressed(key)
+end
+
+function Vessel:keyreleased(key)
+    self.input:keyreleased(key)
 end
 
 return Vessel

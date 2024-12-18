@@ -73,6 +73,11 @@ function Interface:keypressed(key)
     console:keypressed(key)
 end
 
+function Interface:keyreleased(key)
+    -- TODO: keyreleased logic in concole
+--    console:keyreleased(key)
+end
+
 function Interface:mousepressed(x, y, button)
     if button == 1 and self.menuButton then
         self.menuButton:checkPressed(x, y, button)

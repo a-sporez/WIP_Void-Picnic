@@ -1,6 +1,6 @@
-local Vessel = require("source.classes.vessels.Vessel")
+local Vessel = require("source.entities.vessels.Vessel")
 local vector = require('libraries.vector')
-local Hardpoint = require('source.classes.vessels.hardpoints.Hardpoint')
+local Hardpoint = require('source.entities.vessels.hardpoints.Hardpoint')
 
 local Surveyor = {}
 Surveyor.__index = Surveyor
@@ -33,7 +33,7 @@ function Surveyor:create(x, y, width, height)
         occupied = 0,
     }
 
-    local spritePath = 'assets/sprites/motherships/surveyor/ship1.png'
+    local spritePath = 'assets/sprites/motherships/surveyor/surveyor.png'
 
     local obj = Vessel.new(self, x, y, width, height, hardpoints, spritePath)
     obj.hangar = hangar
