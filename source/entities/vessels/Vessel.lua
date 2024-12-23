@@ -1,5 +1,5 @@
-local vector = require('libraries.vector')
-local colors = require('source.lib.colors')
+local vector = require('libraries.hump.vector')
+local colors = require('source.utility.colors')
 local Input  = require('source.utility.InputHandler')
 local Vessel = {}
 
@@ -14,8 +14,8 @@ function Vessel:new(x, y, width, height, hardpoints, spritePath)
         velocity = vector(0, 0),
         max_velocity = 10,
         friction = 0.995,
-        width = width or 256,
-        height = height or 128,
+        width = width or sprt:getWidth(),
+        height = height or sprt:getHeight(),
         angle = 0,
         rotation = 0,
         rotation_speed = math.rad(90),

@@ -6,6 +6,27 @@ Now this is definitely the furthest I have made it into a prototype, of course I
 
 ## Modules
 
+Source code:
+
+- [Source Code](source/source.md)
+  - [utility](source/utility/utility.md)
+    - [canvas](source/utility/canvas/canvas.md)
+    - [ui](source/utility/ui/ui.md)
+  - [states](source/states/states.md)
+  - [scenes](source/scenes/scenes.md)
+    - [world](source/scenes/world/world.md)
+  - [entities](source/entities/entities.md)
+    - [asteroids](source/entities/asteroids/asteroids.md)
+    - [drones](source/entities/drones/drones.md)
+    - [vessels](source/entities/vessels/vessels.md)
+
+- [Assets](assets/assets.md)
+  - [asteroids](assets/sprites/asteroids/asteroids.md)
+  - [drones](assets/sprites/drones/drones.md)
+  - [hardpoints](assets/sprites/hardpoints/hardpoints.md)
+  - [modules](assets/sprites/modules/modules.md)
+  - [motherships](assets/sprites/motherships/motherships.md)
+
 ---
 
 ### **Main**

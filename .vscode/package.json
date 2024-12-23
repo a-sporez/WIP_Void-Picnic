@@ -1,0 +1,4 @@
+{
+    "name": "graphviz",
+    "extensionDependencies": ["tintinweb.graphviz-interactive-preview"]
+}

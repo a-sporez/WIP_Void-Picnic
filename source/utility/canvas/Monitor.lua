@@ -1,12 +1,12 @@
-local Canvas = require('source.utility.canvas.Canvas')
-local Surveyor = require('source.entities.vessels.surveyor')
-local Camera   = require('source.utility.Camera')
-local Input    = require('source.utility.InputHandler')
+local Canvas        = require('source.utility.canvas.Canvas')
+local Surveyor      = require('source.entities.vessels.surveyor')
+local Camera        = require('source.utility.Camera')
+local Input         = require('source.utility.InputHandler')
 
 -- This submodule declares the canvas where elements of the world are drawn.
 local Monitor = setmetatable({}, { __index = Canvas })
 
-local window_width = love.graphics.getWidth()
+local window_width  = love.graphics.getWidth()
 local window_height = love.graphics.getHeight()
 local input = Input:new()
 -- Pass dimensions and currentWorld from the base class
@@ -67,10 +67,10 @@ function Monitor:handleInput()
     elseif input:continuous('pan_right') then
         Camera:move(panning, 0)
     end
-    if input:continuous('pageup') then
-        Camera:adjustZoom(0.1)
-    elseif input:continuous('pagedown') then
-        Camera:adjustZoom(-0.1)
+    if input:continuous('zoom_in') then
+        Camera:adjustZoom(0.01)
+    elseif input:continuous('zoom_out') then
+        Camera:adjustZoom(-0.01)
     end
 end
 

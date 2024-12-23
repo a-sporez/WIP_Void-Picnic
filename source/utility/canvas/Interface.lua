@@ -1,7 +1,7 @@
-local Canvas = require('source.utility.canvas.Canvas')
-local Console= require('source.utility.Console')
-local Button = require('source.utility.ui.Button')
-local GameState = require ('source.states.GameState')
+local Canvas        = require('source.utility.canvas.Canvas')
+local Console       = require('source.utility.Console')
+local Button        = require('source.utility.ui.Button')
+local GameState     = require ('source.states.GameState')
 -- this is where UI elements are stored.
 local Interface = setmetatable({}, {__index = Canvas})
 
