@@ -1,6 +1,11 @@
 local vector = require('libraries.hump.vector')
 local Drone = {}
 
+--[[
+TODO: Extend to load sprite
+TODO: Extend to carry hardpoints
+--]]
+
 -- constructor function for the Drone class base method
 function Drone:new(x, y, width, height, spritePath)
 --    local sprt = spritePath and love.graphic.newImage(spritePath) or nil
