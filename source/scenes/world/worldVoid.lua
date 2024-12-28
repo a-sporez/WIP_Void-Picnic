@@ -16,7 +16,7 @@ end
 
 function Void:update(dt)
     print("[DEBUG] Updating Void World")
-    self.survey2:move(-10, -10, dt)
+    self.survey2:update(dt)
     World.update(self, dt)
 end
 

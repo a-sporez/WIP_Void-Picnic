@@ -54,15 +54,12 @@ function Vessel:clearTarget()
 end
 
 function Vessel:mousepressed(mouse_x, mouse_y, button)
-    
 -- Translate mouse position relative to the vessel's position
     local localMouseX = mouse_x - self.position.x
     local localMouseY = mouse_y - self.position.y
-
 -- Rotate mouse position into the vessel's local space
     local rotatedX = localMouseX * math.cos(-self.angle) - localMouseY * math.sin(-self.angle)
     local rotatedY = localMouseX * math.sin(-self.angle) + localMouseY * math.cos(-self.angle)
-
 -- Check if the point is within the sprite's bounds
     local halfWidth = self.width / 2
     local halfHeight = self.height / 2
@@ -77,7 +74,6 @@ function Vessel:mousepressed(mouse_x, mouse_y, button)
     elseif button == 2 and self.selected then
         self:setTarget(mouse_x, mouse_y)
     end
-    
 end
 
 function Vessel:storeModule(module)

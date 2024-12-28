@@ -21,7 +21,7 @@ function Hardpoint:new(name, type, cpu, pwg, mount_x, mount_y)
 
     local sprt = love.graphics.newImage(sprite_path)
 -- Create the hardpoint object
-    local obj = {
+    local hardpoint = {
         name = name,
         type = type,
         cpu = cpu,
@@ -34,9 +34,9 @@ function Hardpoint:new(name, type, cpu, pwg, mount_x, mount_y)
         height = sprt:getHeight()
     }
 
-    setmetatable(obj, self)
+    setmetatable(hardpoint, self)
     self.__index = self
-    return obj
+    return hardpoint
 end
 
 function Hardpoint:installModule(module)

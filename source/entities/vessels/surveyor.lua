@@ -38,13 +38,13 @@ function Surveyor:create(x, y, width, height)
 
     local spritePath = 'assets/sprites/motherships/surveyor/surveyor.png'
 
-    local obj = Vessel.new(self, x, y, width, height, hardpoints, spritePath)
-    obj.hangar = hangar
-    obj.powergrid = powergrid
-    obj.cpu = cpu
-    obj.maxSpeed = 100 -- example specific attribute
-    obj.type = 'Surveyor'
-    setmetatable(obj, self)
+    local surveyor = Vessel.new(self, x, y, width, height, hardpoints, spritePath)
+    surveyor.hangar = hangar
+    surveyor.powergrid = powergrid
+    surveyor.cpu = cpu
+    surveyor.maxSpeed = 100 -- example specific attribute
+    surveyor.type = 'Surveyor'
+    setmetatable(surveyor, self)
     self.__index = self
 
 --[[
