@@ -47,7 +47,7 @@ function Surveyor:create(x, y, width, height)
     setmetatable(surveyor, self)
     self.__index = self
 
---
+--[[
 -- Additional debug print to confirm object initialization
     print("[DEBUG-SRVYR] CPU initialized: capacity = " .. cpu.capacity .. ", occupied = " .. cpu.occupied)
     print("[DEBUG-SRVYR] Powergrid initialized: capacity = " .. powergrid.capacity .. ", occupied = " .. powergrid.occupied)
@@ -56,7 +56,7 @@ function Surveyor:create(x, y, width, height)
     print("  Position: (" .. x .. ", " .. y .. ")")
     print("  Hardpoints: " .. #hardpoints)
     print("  Max Speed: " .. surveyor.maxSpeed)
---
+--]]
     return surveyor
 end
 
