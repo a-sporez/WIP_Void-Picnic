@@ -40,4 +40,15 @@ Central hub for in-game executable functions for testing and also gameplay... ev
 
   -`function Console:draw()`: Contains all of the logic for drawing and placement of the terminal.
 
-  
+ ---
+
+### **InputHandler**
+Handles the logic for keyboard input
+
+  -`function Input:continuous(action)`: registers continuous key presses
+
+  -`function Input:once(action)`: Registers the key being pressed once.
+
+  -`function Input:bind(action, key)`: binds new key to the type of input.
+
+  -`function Input:clear()`: clears one time trigger at the end of the frame.

@@ -1,5 +1,7 @@
 # World
 
+World scenes are handled independently from the canvas, the handler switches the scenes and handles the base method for all worlds, entities simply need to be added to the table once instantiated.
+
 ## Scenes
 
 ### **worldHandler**
@@ -30,8 +32,4 @@ Base class for worlds where the game elements are instantiated and interacted wi
 
   - `function World:draw()`: draws entities defined in the current world and the nav grid.
 
-#### *Worlds*
-
-  * Void
-  
-  * Nebula
+---
