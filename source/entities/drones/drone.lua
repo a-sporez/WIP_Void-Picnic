@@ -6,7 +6,7 @@ TODO: Extend to load sprite
 TODO: Extend to carry hardpoints
 --]]
 
--- constructor function for the Drone class base method
+-- constructor function for the Drone class base methods
 function Drone:new(x, y, drone_type)
     print("[DEBUG-DRONE] Drone type received:", drone_type)
     print("[DEBUG-DRONE] Self is:", self)
@@ -17,7 +17,7 @@ function Drone:new(x, y, drone_type)
 
     local sprite_path = sprite_paths[drone_type]
     if not sprite_path then
-        error("[ERROR-DRONE] Invalid drone type: "..tostring(drone_type))
+        error("[ERROR-DRONE] Invalid drone type: " .. tostring(drone_type))
     end
 
     local sprite = love.graphics.newImage(sprite_path)
@@ -39,7 +39,6 @@ function Drone:new(x, y, drone_type)
     return drone
 end
 
--- update position and target handling
 function Drone:update(dt)
     if self.target then
         local direction = self.target - self.position
@@ -58,13 +57,20 @@ function Drone:update(dt)
 end
 
 function Drone:isClicked(mouse_x, mouse_y)
-    return mouse_x > self.position.x, - self.width / 2 and
-           mouse_x < self.position.x + self.width / 2 and
-           mouse_y > self.position.y - self.height / 2 and
-           mouse_y < self.position.y + self.height / 2
+    return mouse_x > (self.position.x - self.width / 2) and
+           mouse_x < (self.position.x + self.width / 2) and
+           mouse_y > (self.position.y - self.height / 2) and
+           mouse_y < (self.position.y + self.height / 2)
 end
 
 function Drone:mousepressed(mouse_x, mouse_y, button)
+    print("[DEBUG-DRONE] Mouse pressed at:", mouse_x, mouse_y)
+    print("[DEBUG-DRONE] Drone position:", self.position)
+
+    if not self.position then
+        error("[ERROR-DRONE] Drone position is nil")
+    end
+
     if button == 1 then
         if self:isClicked(mouse_x, mouse_y) then
             self.selected = not self.selected
@@ -89,6 +95,7 @@ function Drone:draw()
     if self.selected then
         love.graphics.setColor(0, 1, 0)
         love.graphics.rectangle('line', self.position.x - self.width / 2 - 2, self.position.y - self.height / 2 - 2, self.width + 4, self.height + 4)
+        love.graphics.setColor(1, 1, 1) -- Reset color to white
     end
 end
 
