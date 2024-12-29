@@ -2,6 +2,7 @@ local Canvas        = require('source.utility.canvas.Canvas')
 local Surveyor      = require('source.entities.vessels.surveyor')
 local Camera        = require('source.utility.Camera')
 local Input         = require('source.utility.InputHandler')
+local SurveyDrone   = require('source.entities.drones.surveyDrone')
 
 -- This submodule declares the canvas where elements of the world are drawn.
 local Monitor = setmetatable({}, { __index = Canvas })
@@ -17,15 +18,16 @@ function Monitor:create(width, height, currentWorld)
     Camera:new(window_width / 2, window_height / 2)
     Camera:setZoom(1)
 
--- Initialize playerShip
+    -- Initialize playerShip
     canvas:initializePlayerShip(width / 2, height / 2)
+    canvas:initializeDrones()
     return canvas
 end
 
 -- Dynamically update the world that the canvas is rendering.
 function Monitor:setWorld(world)
     self.currentWorld = world
--- If the playerShip isn't already in this world, add it
+    -- If the playerShip isn't already in this world, add it
     if self.playerShip then
         table.insert(world.entities, self.playerShip)
     end
@@ -37,18 +39,35 @@ function Monitor:initializePlayerShip(x, y)
         print("[ERROR] Cannot initialize playerShip without a current world.")
         return
     end
-
--- Create the Surveyor (or other ship class)
+    
+    -- Create the Surveyor (or other ship class)
     self.playerShip = Surveyor:create(x, y)
 
--- Add it to the current world's entities
+    -- Add it to the current world's entities
     table.insert(self.currentWorld.entities, self.playerShip)
+end
+
+function Monitor:initializeDrones(x, y)
+    if not self.currentWorld then
+        print("[ERROR] Cannot initialize drones without a current world.")
+        return
+    end
+
+    -- Create new SurveyDrone
+    local surveyDrone = SurveyDrone:new(600, 600)
+    
+    -- Add the drone to the current world's entities
+    table.insert(self.currentWorld.entities, surveyDrone)
+
+    -- Store the reference to the surveyDrone in Monitor
+    self.survey2 = surveyDrone
 end
 
 -- Update method for the Monitor, including playerShip.
 function Monitor:update(dt)
     input:clear()
     self:handleInput()
+    self.survey2:update(dt)
     if self.playerShip then
         self.playerShip:update(dt)
         Camera:update(self.playerShip.x, self.playerShip.y)

@@ -1,7 +1,5 @@
 local Module = require('source.entities.vessels.modules.Module')
---[[
-The overdrive core is a flux capacitor
---]]
+
 local OverdriveCore = {}
 OverdriveCore.__index = OverdriveCore
 setmetatable(OverdriveCore, {__index = Module})

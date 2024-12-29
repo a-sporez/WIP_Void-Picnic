@@ -1,17 +1,18 @@
 local Drone = require('source.entities.drones.Drone')
--- this class is an extension of Drone class, adding color.
-local surveyDrone = Drone:new()
+local SurveyDrone = {}
+SurveyDrone.__index = SurveyDrone
+setmetatable(SurveyDrone, { __index = Drone })
 
-function surveyDrone:new(x, y)
-    local obj = Drone.new(self, x, y)
-    obj.color = {0, 1, 0}
-    return obj
+function SurveyDrone:new(x, y)
+    local drone = Drone.new(self, x, y, 'survey')
+    drone.color = {0, 1, 0}
+    setmetatable(drone, SurveyDrone)
+    print("[DEBUG-SURVEYDRONE] Creating SurveyDrone at:", x, y)
+    return drone
 end
 
-function surveyDrone:draw()
-    love.graphics.setColor(self.color)
+function SurveyDrone:draw()
     Drone.draw(self)
-    love.graphics.setColor(1, 1, 1)
 end
 
-return surveyDrone
+return SurveyDrone

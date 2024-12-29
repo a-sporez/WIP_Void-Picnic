@@ -14,7 +14,11 @@ end
 
 function World:addEntity(entity)
     table.insert(self.entities, entity)
-    print("[DEBUG] Entity added at position:", entity.x, entity.y)
+    if entity.position then
+        print("[DEBUG] Entity added at position:", entity.position.x, entity.position.y)
+    else
+        print("[DEBUG] Entity added without position")
+    end
     return entity
 end
 
