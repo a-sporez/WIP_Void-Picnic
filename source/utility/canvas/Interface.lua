@@ -73,6 +73,7 @@ function Interface:keypressed(key)
     console:keypressed(key)
 end
 
+-- TODO: include input handler to handle input like with the ship
 function Interface:keyreleased(key)
     console:keyreleased(key)
 end

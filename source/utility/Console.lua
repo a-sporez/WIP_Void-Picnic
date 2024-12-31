@@ -93,6 +93,11 @@ function Console:keypressed(key)
     end
 end
 
+-- Add the missing keyreleased method
+function Console:keyreleased(key)
+    -- Implement functionality for keyreleased if needed
+end
+
 function Console:draw()
     local terminal_x = love.graphics.getWidth() - self.width
     local terminal_y = love.graphics.getHeight() - self.height
