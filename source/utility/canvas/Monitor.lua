@@ -116,6 +116,7 @@ end
 
 -- Pass mouse events to the playerShip
 function Monitor:mousepressed(x, y, button)
+    self.survey2:mousepressed(x, y, button)
     if self.playerShip then
         self.playerShip:mousepressed(x, y, button)
     end
