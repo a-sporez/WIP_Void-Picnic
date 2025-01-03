@@ -1,4 +1,5 @@
 local vector = require('libraries.hump.vector')
+local colors = require('source.utility.colors')
 local Drone = {}
 
 --[[
@@ -96,6 +97,12 @@ function Drone:draw()
         love.graphics.setColor(0, 1, 0)
         love.graphics.rectangle('line', self.position.x - self.width / 2 - 2, self.position.y - self.height / 2 - 2, self.width + 4, self.height + 4)
         love.graphics.setColor(1, 1, 1) -- Reset color to white
+    end
+    if self.target then
+        love.graphics.setColor(colors.red)
+        love.graphics.line(self.position.x, self.position.y, self.target.x, self.target.y)
+        love.graphics.circle('line', self.target.x, self.target.y, 5)
+        love.graphics.setColor(1, 1, 1)
     end
 end
 
