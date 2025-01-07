@@ -144,7 +144,6 @@ function Vessel:removeModule(moduleName)
     return nil
 end
 
--- update the Vessels position and declare state as conditions
 function Vessel:update(dt)
     self.input:clear()
     self:handleInput()

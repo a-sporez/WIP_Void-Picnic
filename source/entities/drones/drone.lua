@@ -23,7 +23,7 @@ function Drone:new(x, y, drone_type)
 
     local sprite = love.graphics.newImage(sprite_path)
 
-    local drone = {
+    local obj = {
         position = vector(x, y),
         velocity = vector(0, 0),
         target = nil,
@@ -35,9 +35,9 @@ function Drone:new(x, y, drone_type)
         drone_type = drone_type,
         selected = false
     }
-    setmetatable(drone, self)
+    setmetatable(obj, self)
     self.__index = self
-    return drone
+    return obj
 end
 
 function Drone:update(dt)
