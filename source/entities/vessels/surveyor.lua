@@ -6,11 +6,8 @@ Surveyor.__index = Surveyor
 setmetatable(Surveyor, {__index = Vessel}) -- inherit from Mothership
 
 -- pass location and size to the hardpoints module
---[[
-TODO: contain sprite loading and dimensions in hardpoint and only require type to assign.
---]]
 function Surveyor:create(x, y, width, height)
--- name, type, cpu, pwg, mount_x, mount_y, sprite_path
+-- name, type, cpu, pwg, mount_x, mount_y
     local hardpoints = {
         Hardpoint:new('front_left', '8x8', 1, 1, 51, -13),
         Hardpoint:new('front_right', '8x8', 1, 1, 51, 5),
