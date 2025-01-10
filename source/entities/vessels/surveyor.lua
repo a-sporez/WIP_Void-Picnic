@@ -1,68 +1,45 @@
-local Vessel = require("source.entities.vessels.Vessel")
-local Hardpoint = require('source.entities.vessels.hardpoints.Hardpoint')
-
+local Vessel = require('source.entities.vessels.Vessel') -- Adjust the path as necessary
 local Surveyor = {}
-Surveyor.__index = Surveyor
-setmetatable(Surveyor, {__index = Vessel}) -- inherit from Mothership
+setmetatable(Surveyor, {__index = Vessel}) -- Inherit from Vessel
 
--- pass location and size to the hardpoints module
 function Surveyor:create(x, y, width, height)
--- name, type, cpu, pwg, mount_x, mount_y
+    -- Define specific hardpoints for Surveyor
     local hardpoints = {
-        Hardpoint:new('front_left', '8x8', 1, 1, 51, -13),
-        Hardpoint:new('front_right', '8x8', 1, 1, 51, 5),
-        Hardpoint:new('core_left', '16x18', 2, 2, 5, 5),
-        Hardpoint:new('core_right', '16x18', 2, 2, 5, -23),
-        Hardpoint:new('centre_left', '8x8', 1, 1, -14, -24),
-        Hardpoint:new('centre_right', '8x8', 1, 1, -14, 15)
+        { name = 'front_left', type = '8x8', cpu = 1, pwg = 1, mount_x = 51, mount_y = -13 },
+        { name = 'front_right', type = '8x8', cpu = 1, pwg = 1, mount_x = 51, mount_y = 5 },
+        { name = 'core_left', type = '16x18', cpu = 2, pwg = 2, mount_x = 5, mount_y = 5 },
+        { name = 'core_right', type = '16x18', cpu = 2, pwg = 2, mount_x = 5, mount_y = -23 },
+        { name = 'centre_left', type = '8x8', cpu = 1, pwg = 1, mount_x = -14, mount_y = -24 },
+        { name = 'centre_right', type = '8x8', cpu = 1, pwg = 1, mount_x = -14, mount_y = 15 },
     }
 
-    local hangar = {
-        capacity = 10,
-        occupied = 0,
-        content = {}
-    }
-
-    local powergrid = {
-        capacity = 10,
-        occupied = 0,
-    }
-
-    local cpu = {
-        capacity = 10,
-        occupied = 0,
-    }
+    -- Convert hardpoint definitions to actual objects
+    for i, hp in ipairs(hardpoints) do
+        hardpoints[i] = require('source.entities.vessels.hardpoints.Hardpoint'):new(hp.name, hp.type, hp.cpu, hp.pwg, hp.mount_x, hp.mount_y)
+    end
 
     local spritePath = 'assets/sprites/motherships/surveyor/surveyor.png'
+    local surveyor = Vessel.new(self, x, y, width, height, hardpoints, spritePath) -- Call Vessel constructor
 
-    local surveyor = Vessel.new(self, x, y, width, height, hardpoints, spritePath)
-    surveyor.hangar = hangar
-    surveyor.powergrid = powergrid
-    surveyor.cpu = cpu
-    surveyor.maxSpeed = 100 -- example specific attribute
+    -- Surveyor-specific attributes
+    surveyor.hangar = { capacity = 10, occupied = 0, content = {} }
+    surveyor.powergrid = { capacity = 10, occupied = 0 }
+    surveyor.cpu = { capacity = 10, occupied = 0 }
+    surveyor.maxSpeed = 100
     surveyor.type = 'Surveyor'
-    setmetatable(surveyor, self)
-    self.__index = self
 
---[[
--- Additional debug print to confirm object initialization
-    print("[DEBUG-SRVYR] CPU initialized: capacity = " .. cpu.capacity .. ", occupied = " .. cpu.occupied)
-    print("[DEBUG-SRVYR] Powergrid initialized: capacity = " .. powergrid.capacity .. ", occupied = " .. powergrid.occupied)
-    print("[DEBUG-SRVYR] Hangar initialized: capacity = " .. hangar.capacity .. ", occupied = " .. hangar.occupied)
-    print("[DEBUG-SRVYR] Surveyor created with attributes:")
-    print("  Position: (" .. x .. ", " .. y .. ")")
-    print("  Hardpoints: " .. #hardpoints)
-    print("  Max Speed: " .. surveyor.maxSpeed)
---]]
+    setmetatable(surveyor, self)
     return surveyor
 end
 
 function Surveyor:updatePassive(dt)
-    print("[DEBUG-SRVYR] Surveyor passive state updating.")
+    -- Placeholder for passive updates
+    print("[DEBUG-SURVEYOR] Passive state updating.")
 end
 
 function Surveyor:updateCommand(dt)
-    print("[DEBUG-SRVYR] Surveyor command state updating.")
+    -- Placeholder for command-driven updates
+    print("[DEBUG-SURVEYOR] Command state updating.")
 end
 
 return Surveyor

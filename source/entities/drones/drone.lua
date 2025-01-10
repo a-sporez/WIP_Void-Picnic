@@ -1,46 +1,32 @@
+local Entity = require('source.entities.entity') -- Adjust the path as needed
 local vector = require('libraries.hump.vector')
 local colors = require('source.utility.colors')
+
 local Drone = {}
+setmetatable(Drone, {__index = Entity}) -- Inherit from Entity
 
---[[
-TODO: Extend to load sprite
-TODO: Extend to carry hardpoints
---]]
-
--- constructor function for the Drone class base methods
 function Drone:new(x, y, drone_type)
-    print("[DEBUG-DRONE] Drone type received:", drone_type)
-    print("[DEBUG-DRONE] Self is:", self)
-
+    -- Define sprite paths for drone types
     local sprite_paths = {
         ['survey'] = 'assets/sprites/drones/survey.png'
     }
+    local spritePath = sprite_paths[drone_type]
+    assert(spritePath, "[ERROR-DRONE] Invalid drone type: " .. tostring(drone_type))
 
-    local sprite_path = sprite_paths[drone_type]
-    if not sprite_path then
-        error("[ERROR-DRONE] Invalid drone type: " .. tostring(drone_type))
-    end
-
-    local sprite = love.graphics.newImage(sprite_path)
-
-    local drone = {
-        position = vector(x, y),
-        velocity = vector(0, 0),
-        target = nil,
-        max_velocity = 10,
-        friction = 0.995,
-        sprite = sprite,
-        width = sprite:getWidth(),
-        height = sprite:getHeight(),
-        drone_type = drone_type,
-        selected = false
-    }
+    -- Call Entity constructor
+    local drone = Entity.new(self, x, y, nil, nil, spritePath)
+    drone.drone_type = drone_type
+    drone.max_velocity = 10
+    drone.friction = 0.995
     setmetatable(drone, self)
-    self.__index = self
     return drone
 end
 
 function Drone:update(dt)
+    -- Call base update to handle position and velocity
+    Entity.update(self, dt)
+
+    -- Drone-specific targeting logic
     if self.target then
         local direction = self.target - self.position
         local distance = direction:len()
@@ -49,15 +35,15 @@ function Drone:update(dt)
             direction:normalizeInplace()
             self.velocity = direction * self.max_velocity
         else
+            -- Stop when close to the target
             self.velocity = vector(0, 0)
             self.target = nil
         end
     end
-    self.velocity = self.velocity * self.friction
-    self.position = self.position + self.velocity * dt
 end
 
 function Drone:isClicked(mouse_x, mouse_y)
+    -- Use Entity's position and dimensions to determine if clicked
     return mouse_x > (self.position.x - self.width / 2) and
            mouse_x < (self.position.x + self.width / 2) and
            mouse_y > (self.position.y - self.height / 2) and
@@ -65,38 +51,29 @@ function Drone:isClicked(mouse_x, mouse_y)
 end
 
 function Drone:mousepressed(mouse_x, mouse_y, button)
-    print("[DEBUG-DRONE] Mouse pressed at:", mouse_x, mouse_y)
-    print("[DEBUG-DRONE] Drone position:", self.position)
+    -- Call base mousepressed for selection logic
+    Entity.mousepressed(self, mouse_x, mouse_y, button)
 
-    if not self.position then
-        error("[ERROR-DRONE] Drone position is nil")
-    end
-
-    if button == 1 then
-        if self:isClicked(mouse_x, mouse_y) then
-            self.selected = not self.selected
-        end
-    elseif button == 2 then
-        if self.selected then
-            self:setTarget(mouse_x, mouse_y)
-        end
+    if button == 2 and self.selected then
+        self:setTarget(mouse_x, mouse_y)
     end
 end
 
 function Drone:setTarget(target_x, target_y)
+    -- Override Entity's setTarget for debug logging
     self.target = vector(target_x, target_y)
+    print(string.format("[DEBUG-DRONE] Target set to (%.2f, %.2f)", target_x, target_y))
 end
 
 function Drone:draw()
-    if self.sprite then
-        love.graphics.draw(self.sprite, self.position.x, self.position.y, 0, 1, 1, self.width / 2, self.height / 2)
-    else
-        love.graphics.ellipse('fill', self.position.x, self.position.y, self.width, self.height)
-    end
+    -- Call base draw to render the sprite
+    Entity.draw(self)
+
+    -- Add drone-specific visuals (e.g., selection and targeting)
     if self.selected then
         love.graphics.setColor(0, 1, 0)
         love.graphics.rectangle('line', self.position.x - self.width / 2 - 2, self.position.y - self.height / 2 - 2, self.width + 4, self.height + 4)
-        love.graphics.setColor(1, 1, 1) -- Reset color to white
+        love.graphics.setColor(1, 1, 1) -- Reset color
     end
     if self.target then
         love.graphics.setColor(colors.red)
