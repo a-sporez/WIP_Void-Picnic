@@ -11,7 +11,9 @@ function Entity:new(x, y, width, height, sprite_path)
         width = width or (sprite and sprite:getWidth()),
         height = height or (sprite and sprite:getHeight()),
         selected = false,
-
+        angle = 0,
+        friction = 0.995,
+        target = nil,
     }
     self.__index = self
     return setmetatable(obj, self)
@@ -49,15 +51,19 @@ function Entity:mousepressed(mouse_x, mouse_y, button)
     local halfHeight = self.height / 2
 
     if button == 1 then
+-- Left mouse button: toggle selection or clear target
         if rotatedX >= -halfWidth and rotatedX <= halfWidth and
            rotatedY >= -halfHeight and rotatedY <= halfHeight then
+            self:toggleSelected()
+        elseif self.selected then
+-- If already selected and clicked outside, unselect
             self:toggleSelected()
         else
             self:clearTarget()
         end
-    elseif button == 1 and self.selected then
-        self:toggleSelected()
+        
     elseif button == 2 and self.selected then
+-- Right mouse button: set a new target if selected
         self:setTarget(mouse_x, mouse_y)
     end
 end
