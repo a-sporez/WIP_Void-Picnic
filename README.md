@@ -24,7 +24,6 @@ TODO: Unified entity management module
 All modules are complete and currently undergoing many refactoring for me to extend modularity as I increase the amount of boilerplate. I am a noice programmer meaning I am likely to create code that is much too verbose and then simplify methods as I learn to connect the modules in a solid way that maximizes performance over rendering quality.
 
 The prototype is a framework in Löve2D Lua that acts as a foundation for the overall project. My intent is to create a modular sandbox RTS within procedurally generated maps that progress in complexity between sessions. I am planning for a central gameplay hub, like a hideout of sorts similar to FPS/RPG hybrids. From this central planning hub each session can be prepared by allocating resources, ships and crews to a deployment area.
-Inspirations for the planning phase are 
 
 I understand the concept of scoping in video game design therefore I felt it would be better to limit the scope to 2 dimensiona handmade sprites in order to focus on the code structuring.
 
